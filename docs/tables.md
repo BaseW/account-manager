@@ -16,6 +16,6 @@ ACCOUNT_TAG {
   int tag_id
 }
 
-ACCOUNT ||--o{ ACCOUNT_TAG
-TAG ||--o{ ACCOUNT_TAG
+ACCOUNT ||--o{ ACCOUNT_TAG: has
+TAG ||--o{ ACCOUNT_TAG: has
 ```
