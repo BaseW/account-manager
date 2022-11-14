@@ -2,17 +2,17 @@
 erDiagram
 
 ACCOUNT {
-  id int [pk]
-  name varchar
+  int id
+  string name
 }
 
 TAG {
-  id int [pk]
-  name varchar
+  int id
+  string name
 }
 
 ACCOUNT_TAG {
-  account_id int [pk]
-  tag_id int [pk]
+  int account_id
+  int tag_id
 }
 ```
