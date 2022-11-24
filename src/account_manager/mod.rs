@@ -61,4 +61,37 @@ impl AccountManager {
 
         Ok(accounts)
     }
+
+    pub fn add_account(&self, account: &Account) -> AccountManagerResult<()> {
+        self.conn
+            .execute("INSERT INTO account (name) VALUES (?1)", (&account.name,))
+            .unwrap_or_else(|err| {
+                // throw AccountManagerError
+                panic!("Error: {}", err);
+            });
+        Ok(())
+    }
+
+    pub fn update_account(&self, account: &Account) -> AccountManagerResult<()> {
+        self.conn
+            .execute(
+                "UPDATE account SET name = ?1 WHERE id = ?2",
+                (&account.name, &account.id),
+            )
+            .unwrap_or_else(|err| {
+                // throw AccountManagerError
+                panic!("Error: {}", err);
+            });
+        Ok(())
+    }
+
+    pub fn delete_account(&self, account: &Account) -> AccountManagerResult<()> {
+        self.conn
+            .execute("DELETE FROM account WHERE id = ?1", (&account.id,))
+            .unwrap_or_else(|err| {
+                // throw AccountManagerError
+                panic!("Error: {}", err);
+            });
+        Ok(())
+    }
 }
