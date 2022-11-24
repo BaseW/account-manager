@@ -3,6 +3,12 @@ use sqlite::open_db;
 mod sqlite;
 
 #[derive(Debug)]
+pub struct Tag {
+    pub id: i32,
+    pub name: String,
+}
+
+#[derive(Debug)]
 pub struct Account {
     pub id: i32,
     pub name: String,
@@ -88,6 +94,39 @@ impl AccountManager {
     pub fn delete_account(&self, account: &Account) -> AccountManagerResult<()> {
         self.conn
             .execute("DELETE FROM account WHERE id = ?1", (&account.id,))
+            .unwrap_or_else(|err| {
+                // throw AccountManagerError
+                panic!("Error: {}", err);
+            });
+        Ok(())
+    }
+
+    pub fn add_tag(&self, tag: &Tag) -> AccountManagerResult<()> {
+        self.conn
+            .execute("INSERT INTO tag (name) VALUES (?1)", (&tag.name,))
+            .unwrap_or_else(|err| {
+                // throw AccountManagerError
+                panic!("Error: {}", err);
+            });
+        Ok(())
+    }
+
+    pub fn update_tag(&self, tag: &Tag) -> AccountManagerResult<()> {
+        self.conn
+            .execute(
+                "UPDATE tag SET name = ?1 WHERE id = ?2",
+                (&tag.name, &tag.id),
+            )
+            .unwrap_or_else(|err| {
+                // throw AccountManagerError
+                panic!("Error: {}", err);
+            });
+        Ok(())
+    }
+
+    pub fn delete_tag(&self, tag: &Tag) -> AccountManagerResult<()> {
+        self.conn
+            .execute("DELETE FROM tag WHERE id = ?1", (&tag.id,))
             .unwrap_or_else(|err| {
                 // throw AccountManagerError
                 panic!("Error: {}", err);
