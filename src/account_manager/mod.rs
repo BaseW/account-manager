@@ -1,4 +1,5 @@
 use sqlite::open_db;
+use std::fmt;
 
 mod sqlite;
 
@@ -15,8 +16,12 @@ pub struct Account {
 }
 
 #[derive(Debug)]
-pub struct AccountManagerError {
-    message: String,
+pub struct AccountManagerError;
+
+impl fmt::Display for AccountManagerError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "AccountManagerError: {:?}", self)
+    }
 }
 
 pub type AccountManagerResult<T> = std::result::Result<T, AccountManagerError>;
