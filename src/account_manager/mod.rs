@@ -13,6 +13,7 @@ pub struct Tag {
 pub struct Account {
     pub id: i32,
     pub name: String,
+    pub tags: Option<Vec<Tag>>,
 }
 
 #[derive(Debug)]
@@ -80,6 +81,49 @@ impl AccountManager {
                 Ok(Account {
                     id: row.get(0)?,
                     name: row.get(1)?,
+                    tags: None,
+                })
+            })
+            .unwrap_or_else(|err| {
+                // throw AccountManagerError
+                panic!("Error: {}", err);
+            });
+
+        for account in account_iter {
+            let account = account.unwrap_or_else(|err| {
+                // throw AccountManagerError
+                panic!("Error: {}", err);
+            });
+            accounts.push(account);
+        }
+
+        Ok(accounts)
+    }
+
+    pub fn get_accounts_with_tags(&self) -> AccountManagerResult<Vec<Account>> {
+        let mut accounts: Vec<Account> = Vec::new();
+
+        let mut stmt = self
+            .conn
+            .prepare(
+                "SELECT accounts.id, accounts.name, tags.id, tags.name
+                 FROM accounts
+                 LEFT JOIN account_tag ON accounts.id = account_tag.account_id
+                 LEFT JOIN tags ON account_tag.tag_id = tags.id",
+            )
+            .unwrap_or_else(|err| {
+                // throw AccountManagerError
+                panic!("Error: {}", err);
+            });
+        let account_iter = stmt
+            .query_map([], |row| {
+                Ok(Account {
+                    id: row.get(0)?,
+                    name: row.get(1)?,
+                    tags: Some(vec![Tag {
+                        id: row.get(2)?,
+                        name: row.get(3)?,
+                    }]),
                 })
             })
             .unwrap_or_else(|err| {
@@ -214,5 +258,6 @@ mod tests {
 
         let accounts = account_manager.get_accounts().unwrap();
         assert_eq!(accounts.len(), 1);
+        assert_eq!(accounts[0].name, "test");
     }
 }
