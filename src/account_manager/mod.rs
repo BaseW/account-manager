@@ -241,13 +241,14 @@ impl AccountManager {
 
 #[cfg(test)]
 mod tests {
-    use crate::utils::prepare_sample_tables;
+    use crate::utils::{prepare_sample_tables, reset_sample_tables};
 
     use super::*;
 
     #[test]
     fn test_add_account() {
         let db_path = "test.db3";
+        reset_sample_tables(db_path);
         prepare_sample_tables(db_path);
 
         let account_manager = AccountManager::new(db_path).unwrap();
@@ -259,5 +260,41 @@ mod tests {
         let accounts = account_manager.get_accounts().unwrap();
         assert_eq!(accounts.len(), 1);
         assert_eq!(accounts[0].name, "test");
+    }
+
+    #[test]
+    fn test_add_account_and_tag() {
+        let db_path = "test.db3";
+        reset_sample_tables(db_path);
+        prepare_sample_tables(db_path);
+
+        let account_manager = AccountManager::new(db_path).unwrap();
+        let account = AccountInput {
+            name: "test".to_string(),
+        };
+        account_manager.add_account(&account).unwrap();
+
+        let tag = TagInput {
+            name: "test".to_string(),
+        };
+        account_manager.add_tag(&tag).unwrap();
+
+        let account = Account {
+            id: 1,
+            name: "test".to_string(),
+            tags: None,
+        };
+        let tag = Tag {
+            id: 1,
+            name: "test".to_string(),
+        };
+        account_manager
+            .assign_tag_to_account(&account, &tag)
+            .unwrap();
+
+        let accounts = account_manager.get_accounts_with_tags().unwrap();
+        assert_eq!(accounts.len(), 1);
+        assert_eq!(accounts[0].name, "test");
+        assert_eq!(accounts[0].tags.as_ref().unwrap().len(), 1);
     }
 }

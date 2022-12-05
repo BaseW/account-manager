@@ -36,15 +36,23 @@ pub fn prepare_sample_tables(db_path: &str) {
 
 pub fn add_sample_data(db_path: &str) {
     let conn = Connection::open(db_path).unwrap();
-    conn.execute("INSERT INTO account (name) VALUES (?1)", &["Alice"])
+    conn.execute("INSERT INTO accounts (name) VALUES (?1)", &["Alice"])
         .unwrap();
-    conn.execute("INSERT INTO account (name) VALUES (?1)", &["Bob"])
+    conn.execute("INSERT INTO accounts (name) VALUES (?1)", &["Bob"])
         .unwrap();
-    conn.execute("INSERT INTO account (name) VALUES (?1)", &["Carol"])
+    conn.execute("INSERT INTO accounts (name) VALUES (?1)", &["Carol"])
         .unwrap();
 }
 
 pub fn delete_sample_data(db_path: &str) {
     let conn = Connection::open(db_path).unwrap();
     conn.execute("DELETE FROM account", []).unwrap();
+}
+
+pub fn reset_sample_tables(db_path: &str) {
+    let conn = Connection::open(db_path).unwrap();
+    conn.execute("DROP TABLE IF EXISTS account_tag", [])
+        .unwrap();
+    conn.execute("DROP TABLE IF EXISTS accounts", []).unwrap();
+    conn.execute("DROP TABLE IF EXISTS tags", []).unwrap();
 }
