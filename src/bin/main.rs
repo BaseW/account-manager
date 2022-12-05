@@ -1,11 +1,11 @@
 use account_manager::{
     account_manager::{AccountManager, AccountManagerResult},
-    utils::{add_sample_data, delete_sample_data, prepare_sample_table},
+    utils::{add_sample_data, delete_sample_data, prepare_sample_tables},
 };
 
 fn main() -> AccountManagerResult<()> {
     let path = "sample.db3";
-    prepare_sample_table(path);
+    prepare_sample_tables(path);
     add_sample_data(path);
 
     let account_manager = AccountManager::new(path)?;

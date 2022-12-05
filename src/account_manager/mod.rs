@@ -50,7 +50,7 @@ impl AccountManager {
 
         let mut stmt = self
             .conn
-            .prepare("SELECT id, name FROM account")
+            .prepare("SELECT id, name FROM accounts")
             .unwrap_or_else(|err| {
                 // throw AccountManagerError
                 panic!("Error: {}", err);
@@ -80,7 +80,7 @@ impl AccountManager {
 
     pub fn add_account(&self, account: &Account) -> AccountManagerResult<()> {
         self.conn
-            .execute("INSERT INTO account (name) VALUES (?1)", (&account.name,))
+            .execute("INSERT INTO accounts (name) VALUES (?1)", (&account.name,))
             .unwrap_or_else(|err| {
                 // throw AccountManagerError
                 panic!("Error: {}", err);
@@ -91,7 +91,7 @@ impl AccountManager {
     pub fn update_account(&self, account: &Account) -> AccountManagerResult<()> {
         self.conn
             .execute(
-                "UPDATE account SET name = ?1 WHERE id = ?2",
+                "UPDATE accounts SET name = ?1 WHERE id = ?2",
                 (&account.name, &account.id),
             )
             .unwrap_or_else(|err| {
@@ -103,7 +103,7 @@ impl AccountManager {
 
     pub fn delete_account(&self, account: &Account) -> AccountManagerResult<()> {
         self.conn
-            .execute("DELETE FROM account WHERE id = ?1", (&account.id,))
+            .execute("DELETE FROM accounts WHERE id = ?1", (&account.id,))
             .unwrap_or_else(|err| {
                 // throw AccountManagerError
                 panic!("Error: {}", err);
@@ -113,7 +113,7 @@ impl AccountManager {
 
     pub fn add_tag(&self, tag: &Tag) -> AccountManagerResult<()> {
         self.conn
-            .execute("INSERT INTO tag (name) VALUES (?1)", (&tag.name,))
+            .execute("INSERT INTO tags (name) VALUES (?1)", (&tag.name,))
             .unwrap_or_else(|err| {
                 // throw AccountManagerError
                 panic!("Error: {}", err);
@@ -124,7 +124,7 @@ impl AccountManager {
     pub fn update_tag(&self, tag: &Tag) -> AccountManagerResult<()> {
         self.conn
             .execute(
-                "UPDATE tag SET name = ?1 WHERE id = ?2",
+                "UPDATE tags SET name = ?1 WHERE id = ?2",
                 (&tag.name, &tag.id),
             )
             .unwrap_or_else(|err| {
@@ -136,7 +136,7 @@ impl AccountManager {
 
     pub fn delete_tag(&self, tag: &Tag) -> AccountManagerResult<()> {
         self.conn
-            .execute("DELETE FROM tag WHERE id = ?1", (&tag.id,))
+            .execute("DELETE FROM tags WHERE id = ?1", (&tag.id,))
             .unwrap_or_else(|err| {
                 // throw AccountManagerError
                 panic!("Error: {}", err);
