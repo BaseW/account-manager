@@ -16,6 +16,26 @@ pub struct Account {
 }
 
 #[derive(Debug)]
+pub struct AccountInput {
+    pub name: String,
+}
+
+#[derive(Debug)]
+pub struct TagInput {
+    pub name: String,
+}
+
+#[derive(Debug)]
+pub struct AccountDelete {
+    pub id: i32,
+}
+
+#[derive(Debug)]
+pub struct TagDelete {
+    pub id: i32,
+}
+
+#[derive(Debug)]
 pub struct AccountManagerError;
 
 impl fmt::Display for AccountManagerError {
@@ -78,7 +98,7 @@ impl AccountManager {
         Ok(accounts)
     }
 
-    pub fn add_account(&self, account: &Account) -> AccountManagerResult<()> {
+    pub fn add_account(&self, account: &AccountInput) -> AccountManagerResult<()> {
         self.conn
             .execute("INSERT INTO accounts (name) VALUES (?1)", (&account.name,))
             .unwrap_or_else(|err| {
@@ -101,7 +121,7 @@ impl AccountManager {
         Ok(())
     }
 
-    pub fn delete_account(&self, account: &Account) -> AccountManagerResult<()> {
+    pub fn delete_account(&self, account: &AccountDelete) -> AccountManagerResult<()> {
         self.conn
             .execute("DELETE FROM accounts WHERE id = ?1", (&account.id,))
             .unwrap_or_else(|err| {
@@ -111,7 +131,7 @@ impl AccountManager {
         Ok(())
     }
 
-    pub fn add_tag(&self, tag: &Tag) -> AccountManagerResult<()> {
+    pub fn add_tag(&self, tag: &TagInput) -> AccountManagerResult<()> {
         self.conn
             .execute("INSERT INTO tags (name) VALUES (?1)", (&tag.name,))
             .unwrap_or_else(|err| {
@@ -134,7 +154,7 @@ impl AccountManager {
         Ok(())
     }
 
-    pub fn delete_tag(&self, tag: &Tag) -> AccountManagerResult<()> {
+    pub fn delete_tag(&self, tag: &TagDelete) -> AccountManagerResult<()> {
         self.conn
             .execute("DELETE FROM tags WHERE id = ?1", (&tag.id,))
             .unwrap_or_else(|err| {
@@ -172,5 +192,27 @@ impl AccountManager {
                 panic!("Error: {}", err);
             });
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::utils::prepare_sample_tables;
+
+    use super::*;
+
+    #[test]
+    fn test_add_account() {
+        let db_path = "test.db3";
+        prepare_sample_tables(db_path);
+
+        let account_manager = AccountManager::new(db_path).unwrap();
+        let account = AccountInput {
+            name: "test".to_string(),
+        };
+        account_manager.add_account(&account).unwrap();
+
+        let accounts = account_manager.get_accounts().unwrap();
+        assert_eq!(accounts.len(), 1);
     }
 }
