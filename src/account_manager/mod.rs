@@ -31,6 +31,11 @@ pub struct AccountManager {
     conn: rusqlite::Connection,
 }
 
+// AccountManager manages accounts and tags.
+// Account has id and name.
+// Tag also has id and name.
+// Account can have multiple tags.
+// Tag can be assigned to multiple accounts.
 impl AccountManager {
     pub fn new(db_path: &str) -> AccountManagerResult<AccountManager> {
         let conn = open_db(db_path).unwrap_or_else(|err| {
@@ -132,6 +137,36 @@ impl AccountManager {
     pub fn delete_tag(&self, tag: &Tag) -> AccountManagerResult<()> {
         self.conn
             .execute("DELETE FROM tag WHERE id = ?1", (&tag.id,))
+            .unwrap_or_else(|err| {
+                // throw AccountManagerError
+                panic!("Error: {}", err);
+            });
+        Ok(())
+    }
+
+    pub fn assign_tag_to_account(&self, account: &Account, tag: &Tag) -> AccountManagerResult<()> {
+        self.conn
+            .execute(
+                "INSERT INTO account_tag (account_id, tag_id) VALUES (?1, ?2)",
+                (&account.id, &tag.id),
+            )
+            .unwrap_or_else(|err| {
+                // throw AccountManagerError
+                panic!("Error: {}", err);
+            });
+        Ok(())
+    }
+
+    pub fn unassign_tag_from_account(
+        &self,
+        account: &Account,
+        tag: &Tag,
+    ) -> AccountManagerResult<()> {
+        self.conn
+            .execute(
+                "DELETE FROM account_tag WHERE account_id = ?1 AND tag_id = ?2",
+                (&account.id, &tag.id),
+            )
             .unwrap_or_else(|err| {
                 // throw AccountManagerError
                 panic!("Error: {}", err);
