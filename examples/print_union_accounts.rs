@@ -18,10 +18,6 @@ fn main() {
     let accounts = read_icloud_accounts_from_file(&icloud_csv_path);
     // add url to HashSet
     for account in accounts {
-        // print url if url does not have dot
-        if !account.url.contains(".") {
-            println!("icloud: {}", account.url);
-        }
         account_set.insert(account.url);
     }
 
@@ -29,10 +25,6 @@ fn main() {
     let accounts = read_chrome_accounts_from_file(&chrome_csv_path);
     // add url to HashSet
     for account in accounts {
-        // print url if url does not have dot
-        if !account.url.contains(".") {
-            println!("chrome: {}", account.url);
-        }
         account_set.insert(account.url);
     }
 
@@ -40,10 +32,6 @@ fn main() {
     let accounts = read_firefox_accounts_from_file(&firefox_csv_path);
     // add url to HashSet
     for account in accounts {
-        // print url if url does not have dot
-        if !account.url.contains(".") {
-            println!("firefox: {}", account.url);
-        }
         account_set.insert(account.url);
     }
 
