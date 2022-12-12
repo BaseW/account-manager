@@ -4,6 +4,8 @@ erDiagram
 ACCOUNT {
   int id
   string name
+  string url
+  string username
 }
 
 TAG {
