@@ -13,12 +13,16 @@ pub struct Tag {
 pub struct Account {
     pub id: i32,
     pub name: String,
+    pub url: String,
+    pub username: String,
     pub tags: Option<Vec<Tag>>,
 }
 
 #[derive(Debug)]
 pub struct AccountInput {
     pub name: String,
+    pub url: String,
+    pub username: String,
 }
 
 #[derive(Debug)]
@@ -71,7 +75,7 @@ impl AccountManager {
 
         let mut stmt = self
             .conn
-            .prepare("SELECT id, name FROM accounts")
+            .prepare("SELECT id, name, url, username FROM accounts")
             .unwrap_or_else(|err| {
                 // throw AccountManagerError
                 panic!("Error: {}", err);
@@ -81,6 +85,8 @@ impl AccountManager {
                 Ok(Account {
                     id: row.get(0)?,
                     name: row.get(1)?,
+                    url: row.get(2)?,
+                    username: row.get(3)?,
                     tags: None,
                 })
             })
@@ -106,7 +112,7 @@ impl AccountManager {
         let mut stmt = self
             .conn
             .prepare(
-                "SELECT accounts.id, accounts.name, tags.id, tags.name
+                "SELECT accounts.id, accounts.name, accounts.url, accounts.username, tags.id, tags.name
                  FROM accounts
                  LEFT JOIN account_tag ON accounts.id = account_tag.account_id
                  LEFT JOIN tags ON account_tag.tag_id = tags.id",
@@ -120,9 +126,11 @@ impl AccountManager {
                 Ok(Account {
                     id: row.get(0)?,
                     name: row.get(1)?,
+                    url: row.get(2)?,
+                    username: row.get(3)?,
                     tags: Some(vec![Tag {
-                        id: row.get(2)?,
-                        name: row.get(3)?,
+                        id: row.get(4)?,
+                        name: row.get(5)?,
                     }]),
                 })
             })
@@ -144,7 +152,10 @@ impl AccountManager {
 
     pub fn add_account(&self, account: &AccountInput) -> AccountManagerResult<()> {
         self.conn
-            .execute("INSERT INTO accounts (name) VALUES (?1)", (&account.name,))
+            .execute(
+                "INSERT INTO accounts (name, url, username) VALUES (?1, ?2, ?3)",
+                (&account.name, &account.url, &account.username),
+            )
             .unwrap_or_else(|err| {
                 // throw AccountManagerError
                 panic!("Error: {}", err);
@@ -254,12 +265,16 @@ mod tests {
         let account_manager = AccountManager::new(db_path).unwrap();
         let account = AccountInput {
             name: "test".to_string(),
+            url: "http://localhost:8080".to_string(),
+            username: "username".to_string(),
         };
         account_manager.add_account(&account).unwrap();
 
         let accounts = account_manager.get_accounts().unwrap();
         assert_eq!(accounts.len(), 1);
         assert_eq!(accounts[0].name, "test");
+        assert_eq!(accounts[0].url, "http://localhost:8080");
+        assert_eq!(accounts[0].username, "username");
     }
 
     #[test]
@@ -271,6 +286,8 @@ mod tests {
         let account_manager = AccountManager::new(db_path).unwrap();
         let account = AccountInput {
             name: "test".to_string(),
+            url: "http://localhost:8080".to_string(),
+            username: "username".to_string(),
         };
         account_manager.add_account(&account).unwrap();
 
@@ -282,6 +299,8 @@ mod tests {
         let account = Account {
             id: 1,
             name: "test".to_string(),
+            url: "http://localhost:8080".to_string(),
+            username: "username".to_string(),
             tags: None,
         };
         let tag = Tag {
@@ -295,6 +314,8 @@ mod tests {
         let accounts = account_manager.get_accounts_with_tags().unwrap();
         assert_eq!(accounts.len(), 1);
         assert_eq!(accounts[0].name, "test");
+        assert_eq!(accounts[0].url, "http://localhost:8080");
+        assert_eq!(accounts[0].username, "username");
         assert_eq!(accounts[0].tags.as_ref().unwrap().len(), 1);
     }
 }
