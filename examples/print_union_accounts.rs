@@ -1,4 +1,6 @@
-use account_manager::import::read_icloud_accounts_from_file;
+use account_manager::import::{
+    read_chrome_accounts_from_file, read_firefox_accounts_from_file, read_icloud_accounts_from_file,
+};
 use std::collections::HashSet;
 
 fn main() {
@@ -16,20 +18,32 @@ fn main() {
     let accounts = read_icloud_accounts_from_file(&icloud_csv_path);
     // add url to HashSet
     for account in accounts {
+        // print url if url does not have dot
+        if !account.url.contains(".") {
+            println!("icloud: {}", account.url);
+        }
         account_set.insert(account.url);
     }
 
     // read account from chrome csv file
-    let accounts = read_icloud_accounts_from_file(&chrome_csv_path);
+    let accounts = read_chrome_accounts_from_file(&chrome_csv_path);
     // add url to HashSet
     for account in accounts {
+        // print url if url does not have dot
+        if !account.url.contains(".") {
+            println!("chrome: {}", account.url);
+        }
         account_set.insert(account.url);
     }
 
     // read account from firefox csv file
-    let accounts = read_icloud_accounts_from_file(&firefox_csv_path);
+    let accounts = read_firefox_accounts_from_file(&firefox_csv_path);
     // add url to HashSet
     for account in accounts {
+        // print url if url does not have dot
+        if !account.url.contains(".") {
+            println!("firefox: {}", account.url);
+        }
         account_set.insert(account.url);
     }
 
