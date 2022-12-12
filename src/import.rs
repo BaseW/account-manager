@@ -1,20 +1,21 @@
 use csv::StringRecord;
 
-struct Account {
-    title: String,
-    url: String,
-    username: String,
+#[derive(Debug)]
+pub struct Account {
+    pub title: String,
+    pub url: String,
+    pub username: String,
 }
 
 fn read_csv_from_stdin<'a>() -> Vec<Result<StringRecord, csv::Error>> {
     // Build the CSV reader and iterate over each record.
-    let mut rdr = csv::Reader::from_reader(io::stdin());
+    let mut rdr = csv::Reader::from_reader(std::io::stdin());
     rdr.records().collect::<Vec<_>>()
 }
 
 /// Read iCloud Keychain accounts from stdin.
 /// format: Title, URL, Username, Password, Notes, OTPAuth
-fn read_icloud_accounts() -> Vec<Account> {
+pub fn read_icloud_accounts() -> Vec<Account> {
     let records = read_csv_from_stdin();
     let mut accounts = Vec::new();
     for record in records {
@@ -31,7 +32,7 @@ fn read_icloud_accounts() -> Vec<Account> {
 
 /// Read Chrome accounts from stdin.
 /// format: name, url, username, password
-fn read_chrome_accounts() -> Vec<Account> {
+pub fn read_chrome_accounts() -> Vec<Account> {
     let records = read_csv_from_stdin();
     let mut accounts = Vec::new();
     for record in records {
@@ -48,7 +49,7 @@ fn read_chrome_accounts() -> Vec<Account> {
 
 /// Read Firefox accounts from stdin.
 /// format "url","username","password","httpRealm","formActionOrigin","guid","timeCreated","timeLastUsed","timePasswordChanged"
-fn read_firefox_accounts() -> Vec<Account> {
+pub fn read_firefox_accounts() -> Vec<Account> {
     let records = read_csv_from_stdin();
     let mut accounts = Vec::new();
     for record in records {
