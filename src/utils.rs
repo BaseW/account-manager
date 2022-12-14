@@ -6,7 +6,9 @@ pub fn prepare_sample_tables(db_path: &str) {
     conn.execute(
         "CREATE TABLE IF NOT EXISTS accounts (
                   id              INTEGER PRIMARY KEY,
-                  name            TEXT NOT NULL
+                  name            TEXT NOT NULL,
+                  url             TEXT NOT NULL,
+                  username        TEXT NOT NULL
                   )",
         [],
     )
@@ -36,12 +38,21 @@ pub fn prepare_sample_tables(db_path: &str) {
 
 pub fn add_sample_data(db_path: &str) {
     let conn = Connection::open(db_path).unwrap();
-    conn.execute("INSERT INTO accounts (name) VALUES (?1)", &["Alice"])
-        .unwrap();
-    conn.execute("INSERT INTO accounts (name) VALUES (?1)", &["Bob"])
-        .unwrap();
-    conn.execute("INSERT INTO accounts (name) VALUES (?1)", &["Carol"])
-        .unwrap();
+    conn.execute(
+        "INSERT INTO accounts (name, url, username) VALUES (?1)",
+        &["Alice", "http://localhost:8080", "alice"],
+    )
+    .unwrap();
+    conn.execute(
+        "INSERT INTO accounts (name, url, username) VALUES (?1)",
+        &["Bob", "http://localhost:8080", "bob"],
+    )
+    .unwrap();
+    conn.execute(
+        "INSERT INTO accounts (name, url, username) VALUES (?1)",
+        &["Carol", "http://localhost:8080", "carol"],
+    )
+    .unwrap();
 }
 
 pub fn delete_sample_data(db_path: &str) {
