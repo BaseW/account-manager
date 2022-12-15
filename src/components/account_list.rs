@@ -11,8 +11,8 @@ pub struct Props {
     pub accounts: Vec<Account>,
 }
 
-#[function_component]
-pub fn AccountList(props: &Props) -> Html {
+#[function_component(AccountList)]
+pub fn account_list(props: &Props) -> Html {
     let accounts = props.accounts.clone();
     html! {
         <div>
