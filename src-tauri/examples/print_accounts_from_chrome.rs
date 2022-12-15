@@ -1,4 +1,4 @@
-use account_manager::import::read_chrome_accounts;
+use tauri_app::import::read_chrome_accounts;
 
 fn main() {
     // print account from icloud csv

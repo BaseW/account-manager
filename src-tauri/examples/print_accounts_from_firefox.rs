@@ -1,4 +1,4 @@
-use account_manager::import::read_firefox_accounts;
+use tauri_app::import::read_firefox_accounts;
 
 fn main() {
     // print account from icloud csv
