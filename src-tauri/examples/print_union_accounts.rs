@@ -1,7 +1,7 @@
-use account_manager::import::{
+use std::collections::HashSet;
+use tauri_app::import::{
     read_chrome_accounts_from_file, read_firefox_accounts_from_file, read_icloud_accounts_from_file,
 };
-use std::collections::HashSet;
 
 fn main() {
     // get icloud csv path from stdin
