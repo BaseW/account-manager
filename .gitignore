@@ -1,2 +1,3 @@
-/target
-*.db3
+/dist/
+/target/
+/Cargo.lock

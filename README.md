@@ -1,9 +1,7 @@
-# account-manager
+# Tauri + Yew
 
-各種アカウントを管理するアプリ
+This template should help get you started developing with Tauri and Yew.
 
-## 実装したい機能
+## Recommended IDE Setup
 
-- 自分が持っているアカウントの一覧を表示する
-- アカウントの追加・編集・削除
-- 住所・メールアドレスなど登録されている情報を管理する
+[VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer).
