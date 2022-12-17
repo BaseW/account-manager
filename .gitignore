@@ -1,3 +1,5 @@
 /dist/
 /target/
 /Cargo.lock
+.next/
+node_modules/
