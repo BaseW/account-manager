@@ -8,7 +8,7 @@ import nextLogo from "../assets/next.svg";
 type Account = {
   url: string;
   username: string;
-  from: 'icloud' | 'chrome' | 'firefox'
+  source: 'icloud' | 'chrome' | 'firefox'
 }
 
 function App() {
