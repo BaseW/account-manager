@@ -16,6 +16,9 @@ function App() {
   const [fileFrom, setFileFrom] = useState(''); // ['icloud', 'chrome', 'firefox'
   const [csvData, setCsvData] = useState<string | ArrayBuffer | null>(null);
   const [accounts, setAccounts] = useState<Account[]>([]);
+  const [isIcloudIncluded, setIsIcloudIncluded] = useState(true);
+  const [isChromeIncluded, setIsChromeIncluded] = useState(true);
+  const [isFirefoxIncluded, setIsFirefoxIncluded] = useState(true);
 
   function onUploadFile(e: ChangeEvent<HTMLInputElement>) {
     setIsUploading(true);
@@ -61,6 +64,18 @@ function App() {
     setAccounts([]);
   }
 
+  function onChangeIcloudCheckbox(e: ChangeEvent<HTMLInputElement>) {
+    setIsIcloudIncluded(e.target.checked);
+  }
+
+  function onChangeChromeCheckbox(e: ChangeEvent<HTMLInputElement>) {
+    setIsChromeIncluded(e.target.checked);
+  }
+
+  function onChangeFirefoxCheckbox(e: ChangeEvent<HTMLInputElement>) {
+    setIsFirefoxIncluded(e.target.checked);
+  }
+
   return (
     <div className="container">
       <div>
@@ -72,6 +87,26 @@ function App() {
       </div>
       <div>
         <button onClick={() => onResetAccounts()}>reset accounts</button>
+      </div>
+      <div>
+        <div className="filterConditions">
+          {/* checkbox for icloud */}
+          <div>
+            <input type="checkbox" onChange={onChangeIcloudCheckbox}/>
+            <label>icloud</label>
+          </div>
+          {/* checkbox for chrome */}
+          <div>
+            <input type="checkbox" onChange={onChangeChromeCheckbox}/>
+            <label>chrome</label>
+          </div>
+          {/* checkbox for firefox */}
+          <div>
+            <input type="checkbox" onChange={onChangeFirefoxCheckbox} />
+            <label>firefox</label>
+          </div>
+        </div>
+        <div className="filterButton"></div>
       </div>
       <div>
         <p>Accounts</p>
