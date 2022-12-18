@@ -8,14 +8,28 @@ import nextLogo from "../assets/next.svg";
 type Account = {
   url: string;
   username: string;
-  from: 'icloud' | 'chrome' | 'firefox'
+  source: 'icloud' | 'chrome' | 'firefox'
+}
+
+type AccountPartial = {
+  username: string;
+  source: 'icloud' | 'chrome' | 'firefox'
+}
+
+type AccountMap = {
+  // key is url
+  [key: string]: AccountPartial[];
 }
 
 function App() {
   const [isUploading, setIsUploading] = useState(false);
-  const [fileFrom, setFileFrom] = useState(''); // ['icloud', 'chrome', 'firefox'
+  const [source, setSource] = useState(''); // ['icloud', 'chrome', 'firefox'
   const [csvData, setCsvData] = useState<string | ArrayBuffer | null>(null);
   const [accounts, setAccounts] = useState<Account[]>([]);
+  const [isIcloudIncluded, setIsIcloudIncluded] = useState(true);
+  const [isChromeIncluded, setIsChromeIncluded] = useState(true);
+  const [isFirefoxIncluded, setIsFirefoxIncluded] = useState(true);
+  const [accountMap, setAccountMap] = useState<AccountMap>();
 
   function onUploadFile(e: ChangeEvent<HTMLInputElement>) {
     setIsUploading(true);
@@ -37,7 +51,7 @@ function App() {
       return;
     }
 
-    setFileFrom(from);
+    setSource(from);
 
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -50,7 +64,7 @@ function App() {
 
   function startImport() {
     console.log('start importing');
-    invoke("import_accounts", { csvData, from: fileFrom }).then((res) => {
+    invoke("import_accounts", { csvData, source }).then((res) => {
       const newlyImportedAccounts = res as Account[];
       const concatenedAccounts = [...accounts, ...newlyImportedAccounts];
       setAccounts(concatenedAccounts);
@@ -59,6 +73,25 @@ function App() {
 
   function onResetAccounts() {
     setAccounts([]);
+  }
+
+  function onChangeIcloudCheckbox(e: ChangeEvent<HTMLInputElement>) {
+    setIsIcloudIncluded(e.target.checked);
+  }
+
+  function onChangeChromeCheckbox(e: ChangeEvent<HTMLInputElement>) {
+    setIsChromeIncluded(e.target.checked);
+  }
+
+  function onChangeFirefoxCheckbox(e: ChangeEvent<HTMLInputElement>) {
+    setIsFirefoxIncluded(e.target.checked);
+  }
+
+  function onFilterAccounts() {
+    invoke("filter_accounts", { accounts, isIcloudIncluded, isChromeIncluded, isFirefoxIncluded }).then((res) => {
+      const filteredAccountMap = res as AccountMap;
+      setAccountMap(filteredAccountMap);
+    });
   }
 
   return (
@@ -74,14 +107,53 @@ function App() {
         <button onClick={() => onResetAccounts()}>reset accounts</button>
       </div>
       <div>
-        <p>Accounts</p>
-        <ul>
-          {accounts.map((account) => (
-            <li key={account.url + account.username}>
-              {account.url} - {account.username}
-            </li>
-          ))}
-        </ul>
+        {/* print account count for each source */}
+        <div>
+          <p>icloud: {accounts.filter((account) => account.source === 'icloud').length}</p>
+          <p>chrome: {accounts.filter((account) => account.source === 'chrome').length}</p>
+          <p>firefox: {accounts.filter((account) => account.source === 'firefox').length}</p>
+        </div>
+      </div>
+      <div>
+        <div className="filterConditions">
+          {/* checkbox for icloud */}
+          <div>
+            <input type="checkbox" onChange={onChangeIcloudCheckbox}/>
+            <label>icloud</label>
+          </div>
+          {/* checkbox for chrome */}
+          <div>
+            <input type="checkbox" onChange={onChangeChromeCheckbox}/>
+            <label>chrome</label>
+          </div>
+          {/* checkbox for firefox */}
+          <div>
+            <input type="checkbox" onChange={onChangeFirefoxCheckbox} />
+            <label>firefox</label>
+          </div>
+        </div>
+        <div className="filterButton">
+          <button onClick={onFilterAccounts}>Filter</button>
+        </div>
+      </div>
+      {/* print url list and AccountPartial indented each url from accountMap*/}
+      <div>
+        {accountMap && Object.keys(accountMap).map((url) => {
+          return (
+            <div key={url}>
+              <p>{url}</p>
+              <div>
+                {accountMap[url].map((accountPartial) => {
+                  return (
+                    <div key={accountPartial.username}>
+                      <p>{accountPartial.username}</p>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )
+        })}
       </div>
     </div>
   );
