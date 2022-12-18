@@ -11,6 +11,16 @@ type Account = {
   source: 'icloud' | 'chrome' | 'firefox'
 }
 
+type AccountPartial = {
+  username: string;
+  source: 'icloud' | 'chrome' | 'firefox'
+}
+
+type AccountMap = {
+  // key is url
+  [key: string]: AccountPartial[];
+}
+
 function App() {
   const [isUploading, setIsUploading] = useState(false);
   const [source, setSource] = useState(''); // ['icloud', 'chrome', 'firefox'
@@ -19,6 +29,7 @@ function App() {
   const [isIcloudIncluded, setIsIcloudIncluded] = useState(true);
   const [isChromeIncluded, setIsChromeIncluded] = useState(true);
   const [isFirefoxIncluded, setIsFirefoxIncluded] = useState(true);
+  const [accountMap, setAccountMap] = useState<AccountMap>();
 
   function onUploadFile(e: ChangeEvent<HTMLInputElement>) {
     setIsUploading(true);
@@ -78,8 +89,8 @@ function App() {
 
   function onFilterAccounts() {
     invoke("filter_accounts", { accounts, isIcloudIncluded, isChromeIncluded, isFirefoxIncluded }).then((res) => {
-      const filteredAccounts = res as Account[];
-      setAccounts(filteredAccounts);
+      const filteredAccountMap = res as AccountMap;
+      setAccountMap(filteredAccountMap);
     });
   }
 
@@ -94,6 +105,14 @@ function App() {
       </div>
       <div>
         <button onClick={() => onResetAccounts()}>reset accounts</button>
+      </div>
+      <div>
+        {/* print account count for each source */}
+        <div>
+          <p>icloud: {accounts.filter((account) => account.source === 'icloud').length}</p>
+          <p>chrome: {accounts.filter((account) => account.source === 'chrome').length}</p>
+          <p>firefox: {accounts.filter((account) => account.source === 'firefox').length}</p>
+        </div>
       </div>
       <div>
         <div className="filterConditions">
@@ -117,15 +136,24 @@ function App() {
           <button onClick={onFilterAccounts}>Filter</button>
         </div>
       </div>
+      {/* print url list and AccountPartial indented each url from accountMap*/}
       <div>
-        <p>Accounts</p>
-        <ul>
-          {accounts.map((account) => (
-            <li key={account.url + account.username}>
-              {account.url} - {account.username}
-            </li>
-          ))}
-        </ul>
+        {accountMap && Object.keys(accountMap).map((url) => {
+          return (
+            <div key={url}>
+              <p>{url}</p>
+              <div>
+                {accountMap[url].map((accountPartial) => {
+                  return (
+                    <div key={accountPartial.username}>
+                      <p>{accountPartial.username}</p>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )
+        })}
       </div>
     </div>
   );
