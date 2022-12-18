@@ -136,6 +136,10 @@ function App() {
           <button onClick={onFilterAccounts}>Filter</button>
         </div>
       </div>
+      {/* print key count of accountMap*/}
+      <div>
+        {accountMap && Object.keys(accountMap).length}
+      </div>
       {/* print url list and AccountPartial indented each url from accountMap*/}
       <div>
         {accountMap && Object.keys(accountMap).map((url) => {
