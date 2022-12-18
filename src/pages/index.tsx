@@ -13,7 +13,7 @@ type Account = {
 
 function App() {
   const [isUploading, setIsUploading] = useState(false);
-  const [fileFrom, setFileFrom] = useState(''); // ['icloud', 'chrome', 'firefox'
+  const [source, setSource] = useState(''); // ['icloud', 'chrome', 'firefox'
   const [csvData, setCsvData] = useState<string | ArrayBuffer | null>(null);
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [isIcloudIncluded, setIsIcloudIncluded] = useState(true);
@@ -40,7 +40,7 @@ function App() {
       return;
     }
 
-    setFileFrom(from);
+    setSource(from);
 
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -53,7 +53,7 @@ function App() {
 
   function startImport() {
     console.log('start importing');
-    invoke("import_accounts", { csvData, from: fileFrom }).then((res) => {
+    invoke("import_accounts", { csvData, source }).then((res) => {
       const newlyImportedAccounts = res as Account[];
       const concatenedAccounts = [...accounts, ...newlyImportedAccounts];
       setAccounts(concatenedAccounts);
@@ -74,6 +74,13 @@ function App() {
 
   function onChangeFirefoxCheckbox(e: ChangeEvent<HTMLInputElement>) {
     setIsFirefoxIncluded(e.target.checked);
+  }
+
+  function onFilterAccounts() {
+    invoke("filter_accounts", { accounts, isIcloudIncluded, isChromeIncluded, isFirefoxIncluded }).then((res) => {
+      const filteredAccounts = res as Account[];
+      setAccounts(filteredAccounts);
+    });
   }
 
   return (
@@ -106,7 +113,9 @@ function App() {
             <label>firefox</label>
           </div>
         </div>
-        <div className="filterButton"></div>
+        <div className="filterButton">
+          <button onClick={onFilterAccounts}>Filter</button>
+        </div>
       </div>
       <div>
         <p>Accounts</p>

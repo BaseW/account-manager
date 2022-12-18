@@ -51,9 +51,30 @@ fn import_accounts(csv_data: &str, source: &str) -> Vec<Account> {
     accounts
 }
 
+// filter accounts
+#[tauri::command]
+fn filter_accounts(
+    accounts: Vec<Account>,
+    is_icloud_included: bool,
+    is_chrome_included: bool,
+    is_firefox_included: bool,
+) -> Vec<Account> {
+    let mut filtered_accounts = Vec::new();
+    for account in accounts {
+        if account.source == "icloud" && is_icloud_included {
+            filtered_accounts.push(account);
+        } else if account.source == "chrome" && is_chrome_included {
+            filtered_accounts.push(account);
+        } else if account.source == "firefox" && is_firefox_included {
+            filtered_accounts.push(account);
+        }
+    }
+    filtered_accounts
+}
+
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![import_accounts])
+        .invoke_handler(tauri::generate_handler![import_accounts, filter_accounts])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
