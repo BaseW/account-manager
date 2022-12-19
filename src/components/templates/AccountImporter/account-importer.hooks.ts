@@ -1,4 +1,4 @@
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/tauri";
 import { ChangeEvent, useState } from "react";
 import { Account } from "../../../types";
 
