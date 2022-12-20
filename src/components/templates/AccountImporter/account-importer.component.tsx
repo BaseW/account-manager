@@ -24,14 +24,16 @@ export const AccountImporter = ({
       </div>
       <AccountCount accounts={accounts} />
       <div>
-        <p>Please choose csv</p>
-        <input type="file" onChange={(e) => onUploadFile(e)} />
-      </div>
-      <div>
-        <button disabled={isUploading || csvData === null} onClick={() => startImport()}>Import accounts</button>
-      </div>
-      <div>
-        <button onClick={() => onResetAccounts()}>reset accounts</button>
+        <h2>Import from csv</h2>
+        <div>
+          <input type="file" onChange={(e) => onUploadFile(e)} />
+        </div>
+        <div>
+          <button disabled={isUploading || csvData === null} onClick={() => startImport()}>Import accounts</button>
+        </div>
+        <div>
+          <button onClick={() => onResetAccounts()}>reset accounts</button>
+        </div>
       </div>
     </div>
   )

@@ -19,6 +19,7 @@ export const AccountFilterer = ({ accounts, onToggleMode }: {accounts: Account[]
       <AccountCount accounts={accounts} />
       <div>
         <div className="filterConditions">
+          <h3>Filter Conditions</h3>
           {/* checkbox for icloud */}
           <div>
             <input type="checkbox" onChange={onChangeIcloudCheckbox}/>
@@ -41,10 +42,12 @@ export const AccountFilterer = ({ accounts, onToggleMode }: {accounts: Account[]
       </div>
       {/* print key count of accountMap*/}
       <div>
+        <h2>Count of Filtered Accounts</h2>
         {accountMap && Object.keys(accountMap).length}
       </div>
       {/* print url list and AccountPartial indented each url from accountMap*/}
       <div>
+        <h2>Filtered Accounts</h2>
         {accountMap && Object.keys(accountMap).map((url) => {
           return (
             <div key={url}>
