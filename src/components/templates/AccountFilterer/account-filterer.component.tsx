@@ -1,7 +1,7 @@
 import { Account } from '../../../types';
 import { useAccountFilterer } from './account-filterer.hooks';
 
-export const AccountFilterer = ({ accounts }: {accounts: Account[]}) => {
+export const AccountFilterer = ({ accounts, onToggleMode }: {accounts: Account[], onToggleMode: () => void}) => {
   const {
     accountMap,
     onChangeChromeCheckbox,
@@ -12,6 +12,9 @@ export const AccountFilterer = ({ accounts }: {accounts: Account[]}) => {
 
   return (
     <div>
+      <div>
+        <button onClick={() => onToggleMode()}>toggle mode</button>
+      </div>
       <div>
         <div className="filterConditions">
           {/* checkbox for icloud */}

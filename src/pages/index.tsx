@@ -7,6 +7,10 @@ function App() {
   const [mode, setMode] = useState<'import' | 'filter'>('import');
   const [accounts, setAccounts] = useState<Account[]>([]);
 
+  const updateMode = useCallback((newMode: 'import' | 'filter') => {
+    setMode(newMode);
+  }, []);
+
   const updateAccounts = useCallback((newAccounts: Account[]) => {
     setAccounts(newAccounts)
   }, []);
@@ -14,7 +18,9 @@ function App() {
   return (
     <div className="container">
       {
-        mode === 'import' ? (<AccountImporter accounts={accounts} updateAccounts={updateAccounts} />) : (<AccountFilterer accounts={accounts} />)
+        mode === 'import' ? 
+          (<AccountImporter accounts={accounts} onToggleMode={() => updateMode('filter')} updateAccounts={updateAccounts} />)
+          : (<AccountFilterer onToggleMode={() => updateMode('import')} accounts={accounts} />)
       }
     </div>
   );
