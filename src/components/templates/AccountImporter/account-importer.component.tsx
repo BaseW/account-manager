@@ -1,4 +1,5 @@
 import { Account } from "../../../types";
+import { AccountCount } from "../../organisms/AccountCount/account-count.component";
 import { useAccountImporter } from "./account-importer.hooks"
 
 export const AccountImporter = ({
@@ -21,6 +22,7 @@ export const AccountImporter = ({
       <div>
         <button onClick={() => onToggleMode()}>toggle mode</button>
       </div>
+      <AccountCount accounts={accounts} />
       <div>
         <p>Please choose csv</p>
         <input type="file" onChange={(e) => onUploadFile(e)} />
@@ -30,12 +32,6 @@ export const AccountImporter = ({
       </div>
       <div>
         <button onClick={() => onResetAccounts()}>reset accounts</button>
-      </div>
-      {/* print account count for each source */}
-      <div>
-        <p>icloud: {accounts.filter((account) => account.source === 'icloud').length}</p>
-        <p>chrome: {accounts.filter((account) => account.source === 'chrome').length}</p>
-        <p>firefox: {accounts.filter((account) => account.source === 'firefox').length}</p>
       </div>
     </div>
   )

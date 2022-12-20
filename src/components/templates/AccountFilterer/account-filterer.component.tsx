@@ -1,4 +1,5 @@
 import { Account } from '../../../types';
+import { AccountCount } from '../../organisms/AccountCount/account-count.component';
 import { useAccountFilterer } from './account-filterer.hooks';
 
 export const AccountFilterer = ({ accounts, onToggleMode }: {accounts: Account[], onToggleMode: () => void}) => {
@@ -15,6 +16,7 @@ export const AccountFilterer = ({ accounts, onToggleMode }: {accounts: Account[]
       <div>
         <button onClick={() => onToggleMode()}>toggle mode</button>
       </div>
+      <AccountCount accounts={accounts} />
       <div>
         <div className="filterConditions">
           {/* checkbox for icloud */}
