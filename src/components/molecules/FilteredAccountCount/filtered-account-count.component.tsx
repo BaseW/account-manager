@@ -5,4 +5,4 @@ export const FilteredAccountCount = (accountMap: AccountMap) => (
     <h2>Count of Filtered Accounts</h2>
     {accountMap && Object.keys(accountMap).length}
   </div>
-)
+);

@@ -3,7 +3,7 @@ import { AccountExporterProps } from "./account-exporter.types";
 export const AccountExporter = ({
   accountMap,
   onToggleMode,
-  exportAccounts
+  exportAccounts,
 }: AccountExporterProps) => (
   <div>
     <div>
@@ -17,4 +17,4 @@ export const AccountExporter = ({
       </div>
     </div>
   </div>
-)
+);
