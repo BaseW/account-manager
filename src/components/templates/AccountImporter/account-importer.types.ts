@@ -1,3 +1,4 @@
+import { ChangeEvent } from "react";
 import { Account, AccountSource } from "../../../types";
 
 export interface AccountImporterProps {
@@ -8,4 +9,11 @@ export interface AccountImporterProps {
   ) => void;
   onResetAccounts: () => void;
   onToggleMode: () => void;
+}
+
+export interface AccountImporterState {
+  isUploading: boolean;
+  source: AccountSource | null;
+  csvData: string | ArrayBuffer | null;
+  onUploadFile: (e: ChangeEvent<HTMLInputElement>) => void;
 }

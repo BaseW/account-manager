@@ -8,8 +8,7 @@ module.exports = {
     'standard-with-typescript',
     'prettier'
   ],
-  overrides: [
-  ],
+  overrides: [],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
@@ -19,5 +18,6 @@ module.exports = {
     'react'
   ],
   rules: {
+    'react/react-in-jsx-scope': 'off'
   }
 }

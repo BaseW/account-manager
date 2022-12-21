@@ -4,7 +4,7 @@ import { AccountImporter } from "../components/templates/AccountImporter/account
 import { AccountFilterer } from "../components/templates/AccountFilterer/account-filterer.component";
 import { invoke } from "@tauri-apps/api/tauri";
 
-function App() {
+function App(): JSX.Element {
   const [mode, setMode] = useState<"import" | "filter">("import");
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [accountMap, setAccountMap] = useState<AccountMap>();
@@ -25,7 +25,7 @@ function App() {
     isIcloudIncluded: boolean,
     isChromeIncluded: boolean,
     isFirefoxIncluded: boolean
-  ) {
+  ): void {
     invoke("filter_accounts", {
       accounts,
       isIcloudIncluded,
@@ -34,24 +34,30 @@ function App() {
     }).then((res) => {
       const filteredAccountMap = res as AccountMap;
       updateAccountMap(filteredAccountMap);
+    })
+    .catch((err) => {
+      console.log(err);
     });
   }
 
   function startImport(
     csvData: string | ArrayBuffer | null,
     source: AccountSource
-  ) {
+  ): void {
     console.log("start importing");
     invoke("import_accounts", { csvData, source }).then((res) => {
       const newlyImportedAccounts = res as Account[];
       const concatenedAccounts = [...accounts, ...newlyImportedAccounts];
       updateAccounts(concatenedAccounts);
+    })
+    .catch((err) => {
+      console.log(err);
     });
   }
 
-  function onResetAccounts() {
+  const onResetAccounts = useCallback(() => {
     updateAccounts([]);
-  }
+  }, []);
 
   return (
     <div className="container">

@@ -1,10 +1,11 @@
+import { FilteredAccountCount } from "../../molecules/FilteredAccountCount/filtered-account-count.component";
 import { AccountExporterProps } from "./account-exporter.types";
 
 export const AccountExporter = ({
   accountMap,
   onToggleMode,
   exportAccounts,
-}: AccountExporterProps) => (
+}: AccountExporterProps): JSX.Element => (
   <div>
     <div>
       <button onClick={() => onToggleMode()}>toggle mode</button>

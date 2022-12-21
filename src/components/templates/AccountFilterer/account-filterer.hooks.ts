@@ -1,6 +1,5 @@
-import { invoke } from "@tauri-apps/api/tauri";
 import { ChangeEvent, useState } from "react";
-import { Account, AccountMap } from "../../../types";
+import { AccountFiltererState } from "./account-filterer.types";
 
 export const useAccountFilterer = (
   onFilterAccounts: (
@@ -8,24 +7,24 @@ export const useAccountFilterer = (
     isChromeIncluded: boolean,
     isFirefoxIncluded: boolean
   ) => void
-) => {
+): AccountFiltererState => {
   const [isIcloudIncluded, setIsIcloudIncluded] = useState(true);
   const [isChromeIncluded, setIsChromeIncluded] = useState(true);
   const [isFirefoxIncluded, setIsFirefoxIncluded] = useState(true);
 
-  function onChangeIcloudCheckbox(e: ChangeEvent<HTMLInputElement>) {
+  function onChangeIcloudCheckbox(e: ChangeEvent<HTMLInputElement>): void {
     setIsIcloudIncluded(e.target.checked);
   }
 
-  function onChangeChromeCheckbox(e: ChangeEvent<HTMLInputElement>) {
+  function onChangeChromeCheckbox(e: ChangeEvent<HTMLInputElement>): void {
     setIsChromeIncluded(e.target.checked);
   }
 
-  function onChangeFirefoxCheckbox(e: ChangeEvent<HTMLInputElement>) {
+  function onChangeFirefoxCheckbox(e: ChangeEvent<HTMLInputElement>): void {
     setIsFirefoxIncluded(e.target.checked);
   }
 
-  function onFilterAccountsCallback() {
+  function onFilterAccountsCallback(): void {
     onFilterAccounts(isIcloudIncluded, isChromeIncluded, isFirefoxIncluded);
   }
 
