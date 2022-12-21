@@ -1,6 +1,6 @@
-import { Account } from "../../../types";
+import { Account } from '../../../types'
 
-export const AccountCount = ({accounts}: {accounts: Account[]}) => (
+export const AccountCount = ({ accounts }: { accounts: Account[] }) => (
   <div>
     <h2>Count of Accounts</h2>
     <p>icloud: {accounts.filter((account) => account.source === 'icloud').length}</p>

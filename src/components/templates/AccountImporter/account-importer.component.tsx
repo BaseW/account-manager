@@ -1,6 +1,6 @@
-import { Account } from "../../../types";
-import { AccountCount } from "../../organisms/AccountCount/account-count.component";
-import { useAccountImporter } from "./account-importer.hooks"
+import { Account } from '../../../types'
+import { AccountCount } from '../../organisms/AccountCount/account-count.component'
+import { useAccountImporter } from './account-importer.hooks'
 
 export const AccountImporter = ({
   accounts,
@@ -15,7 +15,7 @@ export const AccountImporter = ({
     onUploadFile,
     startImport,
     onResetAccounts
-  } = useAccountImporter(accounts, updateAccounts);
+  } = useAccountImporter(accounts, updateAccounts)
 
   return (
     <div>

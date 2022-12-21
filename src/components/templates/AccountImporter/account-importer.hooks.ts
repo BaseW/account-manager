@@ -1,54 +1,54 @@
-import { invoke } from "@tauri-apps/api/tauri";
-import { ChangeEvent, useState } from "react";
-import { Account } from "../../../types";
+import { invoke } from '@tauri-apps/api/tauri'
+import { ChangeEvent, useState } from 'react'
+import { Account } from '../../../types'
 
 export const useAccountImporter = (accounts: Account[], updateAccounts: (accounts: Account[]) => void) => {
-  const [isUploading, setIsUploading] = useState(false);
-  const [source, setSource] = useState(''); // ['icloud', 'chrome', 'firefox'
-  const [csvData, setCsvData] = useState<string | ArrayBuffer | null>(null);
+  const [isUploading, setIsUploading] = useState(false)
+  const [source, setSource] = useState('') // ['icloud', 'chrome', 'firefox'
+  const [csvData, setCsvData] = useState<string | ArrayBuffer | null>(null)
 
-  function onUploadFile(e: ChangeEvent<HTMLInputElement>) {
-    setIsUploading(true);
-    const file = e.target.files[0];
+  function onUploadFile (e: ChangeEvent<HTMLInputElement>) {
+    setIsUploading(true)
+    const file = e.target.files[0]
 
-    const fileName = file.name;
-    let from = '';
+    const fileName = file.name
+    let from = ''
     // get type from file name
     if (fileName.includes('icloud')) {
-      from = 'icloud';
+      from = 'icloud'
     } else if (fileName.includes('chrome')) {
-      from = 'chrome';
+      from = 'chrome'
     } else if (fileName.includes('firefox')) {
-      from = 'firefox';
+      from = 'firefox'
     }
 
     if (from === '') {
-      setIsUploading(false);
-      return;
+      setIsUploading(false)
+      return
     }
 
-    setSource(from);
+    setSource(from)
 
-    const reader = new FileReader();
+    const reader = new FileReader()
     reader.onload = (e) => {
-      const text = e.target?.result;
-      setIsUploading(false);
-      setCsvData(text);
-    };
-    reader.readAsText(file);
+      const text = e.target?.result
+      setIsUploading(false)
+      setCsvData(text)
+    }
+    reader.readAsText(file)
   }
 
-  function startImport() {
-    console.log('start importing');
-    invoke("import_accounts", { csvData, source }).then((res) => {
-      const newlyImportedAccounts = res as Account[];
-      const concatenedAccounts = [...accounts, ...newlyImportedAccounts];
-      updateAccounts(concatenedAccounts);
-    });
+  function startImport () {
+    console.log('start importing')
+    invoke('import_accounts', { csvData, source }).then((res) => {
+      const newlyImportedAccounts = res as Account[]
+      const concatenedAccounts = [...accounts, ...newlyImportedAccounts]
+      updateAccounts(concatenedAccounts)
+    })
   }
 
-  function onResetAccounts() {
-    updateAccounts([]);
+  function onResetAccounts () {
+    updateAccounts([])
   }
 
   return {
