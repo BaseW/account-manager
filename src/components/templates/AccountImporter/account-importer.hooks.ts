@@ -12,14 +12,14 @@ export const useAccountImporter = () => {
     const file = e.target.files[0];
 
     const fileName = file.name;
-    let fileSource = '';
+    let fileSource = "";
     // get type from file name
-    if (fileName.includes('icloud')) {
-      fileSource = 'icloud';
-    } else if (fileName.includes('chrome')) {
-      fileSource = 'chrome';
-    } else if (fileName.includes('firefox')) {
-      fileSource = 'firefox';
+    if (fileName.includes("icloud")) {
+      fileSource = "icloud";
+    } else if (fileName.includes("chrome")) {
+      fileSource = "chrome";
+    } else if (fileName.includes("firefox")) {
+      fileSource = "firefox";
     }
 
     const from = fileSource as AccountSource;
@@ -44,5 +44,5 @@ export const useAccountImporter = () => {
     csvData,
     source,
     onUploadFile,
-  }
-}
+  };
+};

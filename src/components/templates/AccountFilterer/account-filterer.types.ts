@@ -1,8 +1,12 @@
-import { Account, AccountMap } from "../../../types"
+import { Account, AccountMap } from "../../../types";
 
-export type AccountFiltererProps = {
+export interface AccountFiltererProps {
   accounts: Account[];
   accountMap: AccountMap;
-  onFilterAccounts: (isIcloudIncluded: boolean, isChromeIncluded: boolean, isFirefoxIncluded: boolean) => void;
+  onFilterAccounts: (
+    isIcloudIncluded: boolean,
+    isChromeIncluded: boolean,
+    isFirefoxIncluded: boolean
+  ) => void;
   onToggleMode: () => void;
 }

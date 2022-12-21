@@ -2,7 +2,13 @@ import { invoke } from "@tauri-apps/api/tauri";
 import { ChangeEvent, useState } from "react";
 import { Account, AccountMap } from "../../../types";
 
-export const useAccountFilterer = (onFilterAccounts: (isIcloudIncluded: boolean, isChromeIncluded: boolean, isFirefoxIncluded: boolean) => void) => {
+export const useAccountFilterer = (
+  onFilterAccounts: (
+    isIcloudIncluded: boolean,
+    isChromeIncluded: boolean,
+    isFirefoxIncluded: boolean
+  ) => void
+) => {
   const [isIcloudIncluded, setIsIcloudIncluded] = useState(true);
   const [isChromeIncluded, setIsChromeIncluded] = useState(true);
   const [isFirefoxIncluded, setIsFirefoxIncluded] = useState(true);
@@ -21,12 +27,12 @@ export const useAccountFilterer = (onFilterAccounts: (isIcloudIncluded: boolean,
 
   function onFilterAccountsCallback() {
     onFilterAccounts(isIcloudIncluded, isChromeIncluded, isFirefoxIncluded);
-  };
+  }
 
   return {
     onChangeChromeCheckbox,
     onChangeIcloudCheckbox,
     onChangeFirefoxCheckbox,
     onFilterAccountsCallback,
-  }
-}
+  };
+};
