@@ -1,21 +1,20 @@
 import { Account } from "../../../types";
 import { AccountCount } from "../../organisms/AccountCount/account-count.component";
 import { useAccountImporter } from "./account-importer.hooks"
+import { AccountImporterProps } from "./account-importer.types";
 
 export const AccountImporter = ({
   accounts,
   onToggleMode,
-  updateAccounts
-}: {
-  accounts: Account[], onToggleMode: () => void; updateAccounts: (accounts: Account[]) => void
-}) => {
+  onImportAccounts,
+  onResetAccounts
+}: AccountImporterProps) => {
   const {
     isUploading,
     csvData,
+    source,
     onUploadFile,
-    startImport,
-    onResetAccounts
-  } = useAccountImporter(accounts, updateAccounts);
+  } = useAccountImporter();
 
   return (
     <div>
@@ -29,7 +28,7 @@ export const AccountImporter = ({
           <input type="file" onChange={(e) => onUploadFile(e)} />
         </div>
         <div>
-          <button disabled={isUploading || csvData === null} onClick={() => startImport()}>Import accounts</button>
+          <button disabled={isUploading || csvData === null} onClick={() => onImportAccounts(csvData, source)}>Import accounts</button>
         </div>
         <div>
           <button onClick={() => onResetAccounts()}>reset accounts</button>

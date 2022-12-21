@@ -13,3 +13,5 @@ export type AccountMap = {
   // key is url
   [key: string]: AccountPartial[];
 }
+
+export type AccountSource = 'icloud' | 'firefox' | 'chrome'

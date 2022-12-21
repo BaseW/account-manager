@@ -1,10 +1,10 @@
 import { invoke } from "@tauri-apps/api/tauri";
 import { ChangeEvent, useState } from "react";
-import { Account } from "../../../types";
+import { Account, AccountSource } from "../../../types";
 
-export const useAccountImporter = (accounts: Account[], updateAccounts: (accounts: Account[]) => void) => {
+export const useAccountImporter = () => {
   const [isUploading, setIsUploading] = useState(false);
-  const [source, setSource] = useState(''); // ['icloud', 'chrome', 'firefox'
+  const [source, setSource] = useState<AccountSource | null>(null);
   const [csvData, setCsvData] = useState<string | ArrayBuffer | null>(null);
 
   function onUploadFile(e: ChangeEvent<HTMLInputElement>) {
@@ -12,17 +12,18 @@ export const useAccountImporter = (accounts: Account[], updateAccounts: (account
     const file = e.target.files[0];
 
     const fileName = file.name;
-    let from = '';
+    let fileSource = '';
     // get type from file name
     if (fileName.includes('icloud')) {
-      from = 'icloud';
+      fileSource = 'icloud';
     } else if (fileName.includes('chrome')) {
-      from = 'chrome';
+      fileSource = 'chrome';
     } else if (fileName.includes('firefox')) {
-      from = 'firefox';
+      fileSource = 'firefox';
     }
 
-    if (from === '') {
+    const from = fileSource as AccountSource;
+    if (!from) {
       setIsUploading(false);
       return;
     }
@@ -38,25 +39,10 @@ export const useAccountImporter = (accounts: Account[], updateAccounts: (account
     reader.readAsText(file);
   }
 
-  function startImport() {
-    console.log('start importing');
-    invoke("import_accounts", { csvData, source }).then((res) => {
-      const newlyImportedAccounts = res as Account[];
-      const concatenedAccounts = [...accounts, ...newlyImportedAccounts];
-      updateAccounts(concatenedAccounts);
-    });
-  }
-
-  function onResetAccounts() {
-    updateAccounts([]);
-  }
-
   return {
     isUploading,
     csvData,
-    accounts,
+    source,
     onUploadFile,
-    startImport,
-    onResetAccounts
   }
 }
