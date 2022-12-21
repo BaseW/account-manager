@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev -p 1420",
     "build": "next build && next export -o dist",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "eslint": "eslint --fix ./src/",
+    "prettier": "prettier --write ./src/"
   },
   "dependencies": {
     "@tauri-apps/api": "^1.2.0",
@@ -25,6 +27,7 @@
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.31.11",
+    "prettier": "^2.8.1",
     "typescript": "*"
   }
 }

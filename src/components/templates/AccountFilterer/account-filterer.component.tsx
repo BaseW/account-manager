@@ -1,15 +1,21 @@
-import { Account } from '../../../types'
-import { AccountCount } from '../../organisms/AccountCount/account-count.component'
-import { useAccountFilterer } from './account-filterer.hooks'
+import { Account } from "../../../types";
+import { AccountCount } from "../../organisms/AccountCount/account-count.component";
+import { useAccountFilterer } from "./account-filterer.hooks";
 
-export const AccountFilterer = ({ accounts, onToggleMode }: { accounts: Account[], onToggleMode: () => void }) => {
+export const AccountFilterer = ({
+  accounts,
+  onToggleMode,
+}: {
+  accounts: Account[];
+  onToggleMode: () => void;
+}) => {
   const {
     accountMap,
     onChangeChromeCheckbox,
     onChangeIcloudCheckbox,
     onChangeFirefoxCheckbox,
-    onFilterAccounts
-  } = useAccountFilterer(accounts)
+    onFilterAccounts,
+  } = useAccountFilterer(accounts);
 
   return (
     <div>
@@ -22,12 +28,12 @@ export const AccountFilterer = ({ accounts, onToggleMode }: { accounts: Account[
           <h3>Filter Conditions</h3>
           {/* checkbox for icloud */}
           <div>
-            <input type="checkbox" onChange={onChangeIcloudCheckbox}/>
+            <input type="checkbox" onChange={onChangeIcloudCheckbox} />
             <label>icloud</label>
           </div>
           {/* checkbox for chrome */}
           <div>
-            <input type="checkbox" onChange={onChangeChromeCheckbox}/>
+            <input type="checkbox" onChange={onChangeChromeCheckbox} />
             <label>chrome</label>
           </div>
           {/* checkbox for firefox */}
@@ -48,23 +54,24 @@ export const AccountFilterer = ({ accounts, onToggleMode }: { accounts: Account[
       {/* print url list and AccountPartial indented each url from accountMap */}
       <div>
         <h2>Filtered Accounts</h2>
-        {accountMap && Object.keys(accountMap).map((url) => {
-          return (
-            <div key={url}>
-              <p>{url}</p>
-              <div>
-                {accountMap[url].map((accountPartial) => {
-                  return (
-                    <div key={accountPartial.username}>
-                      <p>{accountPartial.username}</p>
-                    </div>
-                  )
-                })}
+        {accountMap &&
+          Object.keys(accountMap).map((url) => {
+            return (
+              <div key={url}>
+                <p>{url}</p>
+                <div>
+                  {accountMap[url].map((accountPartial) => {
+                    return (
+                      <div key={accountPartial.username}>
+                        <p>{accountPartial.username}</p>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          )
-        })}
+            );
+          })}
       </div>
     </div>
-  )
-}
+  );
+};

@@ -1,21 +1,18 @@
-import { Account } from '../../../types'
-import { AccountCount } from '../../organisms/AccountCount/account-count.component'
-import { useAccountImporter } from './account-importer.hooks'
+import { Account } from "../../../types";
+import { AccountCount } from "../../organisms/AccountCount/account-count.component";
+import { useAccountImporter } from "./account-importer.hooks";
 
 export const AccountImporter = ({
   accounts,
   onToggleMode,
-  updateAccounts
+  updateAccounts,
 }: {
-  accounts: Account[], onToggleMode: () => void; updateAccounts: (accounts: Account[]) => void
+  accounts: Account[];
+  onToggleMode: () => void;
+  updateAccounts: (accounts: Account[]) => void;
 }) => {
-  const {
-    isUploading,
-    csvData,
-    onUploadFile,
-    startImport,
-    onResetAccounts
-  } = useAccountImporter(accounts, updateAccounts)
+  const { isUploading, csvData, onUploadFile, startImport, onResetAccounts } =
+    useAccountImporter(accounts, updateAccounts);
 
   return (
     <div>
@@ -29,12 +26,17 @@ export const AccountImporter = ({
           <input type="file" onChange={(e) => onUploadFile(e)} />
         </div>
         <div>
-          <button disabled={isUploading || csvData === null} onClick={() => startImport()}>Import accounts</button>
+          <button
+            disabled={isUploading || csvData === null}
+            onClick={() => startImport()}
+          >
+            Import accounts
+          </button>
         </div>
         <div>
           <button onClick={() => onResetAccounts()}>reset accounts</button>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
