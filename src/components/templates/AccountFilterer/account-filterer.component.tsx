@@ -1,15 +1,19 @@
-import { Account } from '../../../types';
 import { AccountCount } from '../../organisms/AccountCount/account-count.component';
 import { useAccountFilterer } from './account-filterer.hooks';
+import { AccountFiltererProps } from './account-filterer.types';
 
-export const AccountFilterer = ({ accounts, onToggleMode }: {accounts: Account[], onToggleMode: () => void}) => {
+export const AccountFilterer = ({
+  accounts,
+  accountMap,
+  onToggleMode,
+  onFilterAccounts,
+}: AccountFiltererProps) => {
   const {
-    accountMap,
     onChangeChromeCheckbox,
     onChangeIcloudCheckbox,
     onChangeFirefoxCheckbox,
-    onFilterAccounts,
-  } = useAccountFilterer(accounts);
+    onFilterAccountsCallback,
+  } = useAccountFilterer(onFilterAccounts);
 
   return (
     <div>
@@ -37,7 +41,7 @@ export const AccountFilterer = ({ accounts, onToggleMode }: {accounts: Account[]
           </div>
         </div>
         <div className="filterButton">
-          <button onClick={onFilterAccounts}>Filter</button>
+          <button onClick={onFilterAccountsCallback}>Filter</button>
         </div>
       </div>
       {/* print key count of accountMap*/}
