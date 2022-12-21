@@ -1,4 +1,3 @@
-import { Account } from "../../../types";
 import { AccountCount } from "../../organisms/AccountCount/account-count.component";
 import { useAccountImporter } from "./account-importer.hooks";
 import { AccountImporterProps } from "./account-importer.types";
