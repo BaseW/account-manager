@@ -21,7 +21,12 @@ export const useAccountFilterer = (accounts: Account[]) => {
   }
 
   function onFilterAccounts() {
-    invoke("filter_accounts", { accounts, isIcloudIncluded, isChromeIncluded, isFirefoxIncluded }).then((res) => {
+    invoke("filter_accounts", {
+      accounts,
+      isIcloudIncluded,
+      isChromeIncluded,
+      isFirefoxIncluded,
+    }).then((res) => {
       const filteredAccountMap = res as AccountMap;
       setAccountMap(filteredAccountMap);
     });
@@ -33,5 +38,5 @@ export const useAccountFilterer = (accounts: Account[]) => {
     onChangeIcloudCheckbox,
     onChangeFirefoxCheckbox,
     onFilterAccounts,
-  }
-}
+  };
+};

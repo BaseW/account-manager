@@ -4,19 +4,19 @@ import { AccountImporter } from "../components/templates/AccountImporter/account
 import { AccountFilterer } from "../components/templates/AccountFilterer/account-filterer.component";
 
 function App() {
-  const [mode, setMode] = useState<'import' | 'filter'>('import');
+  const [mode, setMode] = useState<"import" | "filter">("import");
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [isIcloudIncluded, setIsIcloudIncluded] = useState(true);
   const [isChromeIncluded, setIsChromeIncluded] = useState(true);
   const [isFirefoxIncluded, setIsFirefoxIncluded] = useState(true);
   const [accountMap, setAccountMap] = useState<AccountMap>();
 
-  const updateMode = useCallback((newMode: 'import' | 'filter') => {
+  const updateMode = useCallback((newMode: "import" | "filter") => {
     setMode(newMode);
   }, []);
 
   const updateAccounts = useCallback((newAccounts: Account[]) => {
-    setAccounts(newAccounts)
+    setAccounts(newAccounts);
   }, []);
 
   function onChangeIcloudCheckbox(e: ChangeEvent<HTMLInputElement>) {
@@ -32,7 +32,12 @@ function App() {
   }
 
   function onFilterAccounts() {
-    invoke("filter_accounts", { accounts, isIcloudIncluded, isChromeIncluded, isFirefoxIncluded }).then((res) => {
+    invoke("filter_accounts", {
+      accounts,
+      isIcloudIncluded,
+      isChromeIncluded,
+      isFirefoxIncluded,
+    }).then((res) => {
       const filteredAccountMap = res as AccountMap;
       setAccountMap(filteredAccountMap);
     });
@@ -40,11 +45,18 @@ function App() {
 
   return (
     <div className="container">
-      {
-        mode === 'import' ? 
-          (<AccountImporter accounts={accounts} onToggleMode={() => updateMode('filter')} updateAccounts={updateAccounts} />)
-          : (<AccountFilterer onToggleMode={() => updateMode('import')} accounts={accounts} />)
-      }
+      {mode === "import" ? (
+        <AccountImporter
+          accounts={accounts}
+          onToggleMode={() => updateMode("filter")}
+          updateAccounts={updateAccounts}
+        />
+      ) : (
+        <AccountFilterer
+          onToggleMode={() => updateMode("import")}
+          accounts={accounts}
+        />
+      )}
     </div>
   );
 }

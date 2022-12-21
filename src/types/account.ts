@@ -1,15 +1,12 @@
-export type Account = {
+export interface Account {
   url: string;
   username: string;
-  source: 'icloud' | 'chrome' | 'firefox'
+  source: "icloud" | "chrome" | "firefox";
 }
 
-export type AccountPartial = {
+export interface AccountPartial {
   username: string;
-  source: 'icloud' | 'chrome' | 'firefox'
+  source: "icloud" | "chrome" | "firefox";
 }
 
-export type AccountMap = {
-  // key is url
-  [key: string]: AccountPartial[];
-}
+export type AccountMap = Record<string, AccountPartial[]>;

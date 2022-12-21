@@ -2,9 +2,12 @@ import { invoke } from "@tauri-apps/api/tauri";
 import { ChangeEvent, useState } from "react";
 import { Account } from "../../../types";
 
-export const useAccountImporter = (accounts: Account[], updateAccounts: (accounts: Account[]) => void) => {
+export const useAccountImporter = (
+  accounts: Account[],
+  updateAccounts: (accounts: Account[]) => void
+) => {
   const [isUploading, setIsUploading] = useState(false);
-  const [source, setSource] = useState(''); // ['icloud', 'chrome', 'firefox'
+  const [source, setSource] = useState(""); // ['icloud', 'chrome', 'firefox'
   const [csvData, setCsvData] = useState<string | ArrayBuffer | null>(null);
 
   function onUploadFile(e: ChangeEvent<HTMLInputElement>) {
@@ -12,17 +15,17 @@ export const useAccountImporter = (accounts: Account[], updateAccounts: (account
     const file = e.target.files[0];
 
     const fileName = file.name;
-    let from = '';
+    let from = "";
     // get type from file name
-    if (fileName.includes('icloud')) {
-      from = 'icloud';
-    } else if (fileName.includes('chrome')) {
-      from = 'chrome';
-    } else if (fileName.includes('firefox')) {
-      from = 'firefox';
+    if (fileName.includes("icloud")) {
+      from = "icloud";
+    } else if (fileName.includes("chrome")) {
+      from = "chrome";
+    } else if (fileName.includes("firefox")) {
+      from = "firefox";
     }
 
-    if (from === '') {
+    if (from === "") {
       setIsUploading(false);
       return;
     }
@@ -39,7 +42,7 @@ export const useAccountImporter = (accounts: Account[], updateAccounts: (account
   }
 
   function startImport() {
-    console.log('start importing');
+    console.log("start importing");
     invoke("import_accounts", { csvData, source }).then((res) => {
       const newlyImportedAccounts = res as Account[];
       const concatenedAccounts = [...accounts, ...newlyImportedAccounts];
@@ -57,6 +60,6 @@ export const useAccountImporter = (accounts: Account[], updateAccounts: (account
     accounts,
     onUploadFile,
     startImport,
-    onResetAccounts
-  }
-}
+    onResetAccounts,
+  };
+};
