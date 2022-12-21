@@ -1,21 +1,20 @@
-import { Account } from "../../../types";
+import { FilteredAccountCount } from "../../molecules/FilteredAccountCount/filtered-account-count.component";
 import { AccountCount } from "../../organisms/AccountCount/account-count.component";
 import { useAccountFilterer } from "./account-filterer.hooks";
+import { AccountFiltererProps } from "./account-filterer.types";
 
 export const AccountFilterer = ({
   accounts,
+  accountMap,
   onToggleMode,
-}: {
-  accounts: Account[];
-  onToggleMode: () => void;
-}) => {
+  onFilterAccounts,
+}: AccountFiltererProps) => {
   const {
-    accountMap,
     onChangeChromeCheckbox,
     onChangeIcloudCheckbox,
     onChangeFirefoxCheckbox,
-    onFilterAccounts,
-  } = useAccountFilterer(accounts);
+    onFilterAccountsCallback,
+  } = useAccountFilterer(onFilterAccounts);
 
   return (
     <div>
@@ -43,14 +42,11 @@ export const AccountFilterer = ({
           </div>
         </div>
         <div className="filterButton">
-          <button onClick={onFilterAccounts}>Filter</button>
+          <button onClick={onFilterAccountsCallback}>Filter</button>
         </div>
       </div>
       {/* print key count of accountMap */}
-      <div>
-        <h2>Count of Filtered Accounts</h2>
-        {accountMap && Object.keys(accountMap).length}
-      </div>
+      <FilteredAccountCount accountMap={accountMap} />
       {/* print url list and AccountPartial indented each url from accountMap */}
       <div>
         <h2>Filtered Accounts</h2>

@@ -1,14 +1,12 @@
 import { useCallback, useState } from "react";
-import { Account } from "../types";
+import { Account, AccountMap, AccountSource } from "../types";
 import { AccountImporter } from "../components/templates/AccountImporter/account-importer.component";
 import { AccountFilterer } from "../components/templates/AccountFilterer/account-filterer.component";
+import { invoke } from "@tauri-apps/api/tauri";
 
 function App() {
   const [mode, setMode] = useState<"import" | "filter">("import");
   const [accounts, setAccounts] = useState<Account[]>([]);
-  const [isIcloudIncluded, setIsIcloudIncluded] = useState(true);
-  const [isChromeIncluded, setIsChromeIncluded] = useState(true);
-  const [isFirefoxIncluded, setIsFirefoxIncluded] = useState(true);
   const [accountMap, setAccountMap] = useState<AccountMap>();
 
   const updateMode = useCallback((newMode: "import" | "filter") => {
@@ -19,19 +17,15 @@ function App() {
     setAccounts(newAccounts);
   }, []);
 
-  function onChangeIcloudCheckbox(e: ChangeEvent<HTMLInputElement>) {
-    setIsIcloudIncluded(e.target.checked);
-  }
+  const updateAccountMap = useCallback((newAccountMap: AccountMap) => {
+    setAccountMap(newAccountMap);
+  }, []);
 
-  function onChangeChromeCheckbox(e: ChangeEvent<HTMLInputElement>) {
-    setIsChromeIncluded(e.target.checked);
-  }
-
-  function onChangeFirefoxCheckbox(e: ChangeEvent<HTMLInputElement>) {
-    setIsFirefoxIncluded(e.target.checked);
-  }
-
-  function onFilterAccounts() {
+  function onFilterAccounts(
+    isIcloudIncluded: boolean,
+    isChromeIncluded: boolean,
+    isFirefoxIncluded: boolean
+  ) {
     invoke("filter_accounts", {
       accounts,
       isIcloudIncluded,
@@ -39,8 +33,24 @@ function App() {
       isFirefoxIncluded,
     }).then((res) => {
       const filteredAccountMap = res as AccountMap;
-      setAccountMap(filteredAccountMap);
+      updateAccountMap(filteredAccountMap);
     });
+  }
+
+  function startImport(
+    csvData: string | ArrayBuffer | null,
+    source: AccountSource
+  ) {
+    console.log("start importing");
+    invoke("import_accounts", { csvData, source }).then((res) => {
+      const newlyImportedAccounts = res as Account[];
+      const concatenedAccounts = [...accounts, ...newlyImportedAccounts];
+      updateAccounts(concatenedAccounts);
+    });
+  }
+
+  function onResetAccounts() {
+    updateAccounts([]);
   }
 
   return (
@@ -49,12 +59,15 @@ function App() {
         <AccountImporter
           accounts={accounts}
           onToggleMode={() => updateMode("filter")}
-          updateAccounts={updateAccounts}
+          onImportAccounts={startImport}
+          onResetAccounts={onResetAccounts}
         />
       ) : (
         <AccountFilterer
           onToggleMode={() => updateMode("import")}
           accounts={accounts}
+          accountMap={accountMap}
+          onFilterAccounts={onFilterAccounts}
         />
       )}
     </div>

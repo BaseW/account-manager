@@ -10,3 +10,5 @@ export interface AccountPartial {
 }
 
 export type AccountMap = Record<string, AccountPartial[]>;
+
+export type AccountSource = "icloud" | "firefox" | "chrome";
