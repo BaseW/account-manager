@@ -50,7 +50,8 @@ export const AccountFilterer = ({
       {/* print url list and AccountPartial indented each url from accountMap */}
       <div>
         <h2>Filtered Accounts</h2>
-        {Object.keys(accountMap).length > 0 &&
+        {accountMap !== undefined &&
+          Object.keys(accountMap).length > 0 &&
           Object.keys(accountMap).map((url) => {
             return (
               <div key={url}>

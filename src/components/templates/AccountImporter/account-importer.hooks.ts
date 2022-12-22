@@ -9,7 +9,12 @@ export const useAccountImporter = (): AccountImporterState => {
 
   function onUploadFile(e: ChangeEvent<HTMLInputElement>): void {
     setIsUploading(true);
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
+
+    if (file === undefined) {
+      setIsUploading(false);
+      return;
+    }
 
     const fileName = file.name;
     let fileSource = "";
@@ -28,7 +33,7 @@ export const useAccountImporter = (): AccountImporterState => {
 
     const reader = new FileReader();
     reader.onload = (e) => {
-      const text = e.target?.result;
+      const text = e.target?.result ?? "";
       setIsUploading(false);
       setCsvData(text);
     };
@@ -39,6 +44,6 @@ export const useAccountImporter = (): AccountImporterState => {
     isUploading,
     csvData,
     source,
-    onUploadFile,
+    onUploadFile
   };
 };

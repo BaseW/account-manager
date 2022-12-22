@@ -31,28 +31,36 @@ function App(): JSX.Element {
       isIcloudIncluded,
       isChromeIncluded,
       isFirefoxIncluded,
-    }).then((res) => {
-      const filteredAccountMap = res as AccountMap;
-      updateAccountMap(filteredAccountMap);
     })
-    .catch((err) => {
-      console.log(err);
-    });
+      .then((res) => {
+        const filteredAccountMap = res as AccountMap;
+        updateAccountMap(filteredAccountMap);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function startImport(
     csvData: string | ArrayBuffer | null,
-    source: AccountSource
+    source: AccountSource | null
   ): void {
     console.log("start importing");
-    invoke("import_accounts", { csvData, source }).then((res) => {
-      const newlyImportedAccounts = res as Account[];
-      const concatenedAccounts = [...accounts, ...newlyImportedAccounts];
-      updateAccounts(concatenedAccounts);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+
+    if (csvData === null ?? source === null) {
+      console.log("source is null");
+      return;
+    }
+
+    invoke("import_accounts", { csvData, source })
+      .then((res) => {
+        const newlyImportedAccounts = res as Account[];
+        const concatenedAccounts = [...accounts, ...newlyImportedAccounts];
+        updateAccounts(concatenedAccounts);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   const onResetAccounts = useCallback(() => {

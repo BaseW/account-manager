@@ -5,7 +5,7 @@ export interface AccountImporterProps {
   accounts: Account[];
   onImportAccounts: (
     csvData: string | ArrayBuffer | null,
-    source: AccountSource
+    source: AccountSource | null
   ) => void;
   onResetAccounts: () => void;
   onToggleMode: () => void;
