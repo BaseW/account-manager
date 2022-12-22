@@ -8,7 +8,6 @@ export interface AccountImporterProps {
     source: AccountSource | null
   ) => void;
   onResetAccounts: () => void;
-  onToggleMode: () => void;
 }
 
 export interface AccountImporterState {

@@ -6,21 +6,17 @@ import { AccountFiltererProps } from "./account-filterer.types";
 export const AccountFilterer = ({
   accounts,
   accountMap,
-  onToggleMode,
-  onFilterAccounts,
+  onFilterAccounts
 }: AccountFiltererProps): JSX.Element => {
   const {
     onChangeChromeCheckbox,
     onChangeIcloudCheckbox,
     onChangeFirefoxCheckbox,
-    onFilterAccountsCallback,
+    onFilterAccountsCallback
   } = useAccountFilterer(onFilterAccounts);
 
   return (
     <div>
-      <div>
-        <button onClick={() => onToggleMode()}>toggle mode</button>
-      </div>
       <AccountCount accounts={accounts} />
       <div>
         <div className="filterConditions">

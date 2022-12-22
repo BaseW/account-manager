@@ -9,7 +9,6 @@ export interface AccountFiltererProps {
     isChromeIncluded: boolean,
     isFirefoxIncluded: boolean
   ) => void;
-  onToggleMode: () => void;
 }
 
 export interface AccountFiltererState {
