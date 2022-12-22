@@ -3,7 +3,7 @@ import { Account, AccountMap } from "../../../types";
 
 export interface AccountFiltererProps {
   accounts: Account[];
-  accountMap: AccountMap | undefined;
+  accountMap: AccountMap | null;
   onFilterAccounts: (
     isIcloudIncluded: boolean,
     isChromeIncluded: boolean,

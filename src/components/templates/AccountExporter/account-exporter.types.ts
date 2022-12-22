@@ -1,6 +1,6 @@
 import { AccountMap } from "../../../types";
 
 export interface AccountExporterProps {
-  accountMap: AccountMap | undefined;
+  accountMap: AccountMap | null;
   onExportAccounts: () => void;
 }
