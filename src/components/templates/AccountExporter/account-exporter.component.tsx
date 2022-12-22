@@ -3,18 +3,14 @@ import { AccountExporterProps } from "./account-exporter.types";
 
 export const AccountExporter = ({
   accountMap,
-  onToggleMode,
-  exportAccounts,
+  onExportAccounts
 }: AccountExporterProps): JSX.Element => (
   <div>
-    <div>
-      <button onClick={() => onToggleMode()}>toggle mode</button>
-    </div>
     <FilteredAccountCount accountMap={accountMap} />
     <div>
       <h2>Export to csv</h2>
       <div>
-        <button onClick={() => exportAccounts()}>Export Accounts</button>
+        <button onClick={() => onExportAccounts()}>Export Accounts</button>
       </div>
     </div>
   </div>

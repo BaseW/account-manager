@@ -4,17 +4,13 @@ import { AccountImporterProps } from "./account-importer.types";
 
 export const AccountImporter = ({
   accounts,
-  onToggleMode,
   onImportAccounts,
-  onResetAccounts,
+  onResetAccounts
 }: AccountImporterProps): JSX.Element => {
   const { isUploading, csvData, source, onUploadFile } = useAccountImporter();
 
   return (
     <div>
-      <div>
-        <button onClick={() => onToggleMode()}>toggle mode</button>
-      </div>
       <AccountCount accounts={accounts} />
       <div>
         <h2>Import from csv</h2>
