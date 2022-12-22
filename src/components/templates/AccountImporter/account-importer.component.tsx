@@ -7,7 +7,7 @@ export const AccountImporter = ({
   onToggleMode,
   onImportAccounts,
   onResetAccounts,
-}: AccountImporterProps) => {
+}: AccountImporterProps): JSX.Element => {
   const { isUploading, csvData, source, onUploadFile } = useAccountImporter();
 
   return (

@@ -1,15 +1,20 @@
-import { invoke } from "@tauri-apps/api/tauri";
 import { ChangeEvent, useState } from "react";
-import { Account, AccountSource } from "../../../types";
+import { AccountSource } from "../../../types";
+import { AccountImporterState } from "./account-importer.types";
 
-export const useAccountImporter = () => {
+export const useAccountImporter = (): AccountImporterState => {
   const [isUploading, setIsUploading] = useState(false);
   const [source, setSource] = useState<AccountSource | null>(null);
   const [csvData, setCsvData] = useState<string | ArrayBuffer | null>(null);
 
-  function onUploadFile(e: ChangeEvent<HTMLInputElement>) {
+  function onUploadFile(e: ChangeEvent<HTMLInputElement>): void {
     setIsUploading(true);
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
+
+    if (file === undefined) {
+      setIsUploading(false);
+      return;
+    }
 
     const fileName = file.name;
     let fileSource = "";
@@ -23,16 +28,12 @@ export const useAccountImporter = () => {
     }
 
     const from = fileSource as AccountSource;
-    if (!from) {
-      setIsUploading(false);
-      return;
-    }
 
     setSource(from);
 
     const reader = new FileReader();
     reader.onload = (e) => {
-      const text = e.target?.result;
+      const text = e.target?.result ?? "";
       setIsUploading(false);
       setCsvData(text);
     };
@@ -43,6 +44,6 @@ export const useAccountImporter = () => {
     isUploading,
     csvData,
     source,
-    onUploadFile,
+    onUploadFile
   };
 };

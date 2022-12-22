@@ -1,6 +1,10 @@
 import { Account } from "../../../types";
 
-export const AccountCount = ({ accounts }: { accounts: Account[] }) => (
+export const AccountCount = ({
+  accounts,
+}: {
+  accounts: Account[];
+}): JSX.Element => (
   <div>
     <h2>Count of Accounts</h2>
     <p>
