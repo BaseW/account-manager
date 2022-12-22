@@ -29,6 +29,6 @@
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.31.11",
     "prettier": "^2.8.1",
-    "typescript": "*"
+    "typescript": "^4.9.4"
   }
 }
