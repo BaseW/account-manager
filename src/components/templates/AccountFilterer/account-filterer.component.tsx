@@ -55,7 +55,11 @@ export const AccountFilterer = ({
                 <div>
                   {accountMap[url].map((accountPartial) => {
                     return (
-                      <div key={accountPartial.username}>
+                      <div
+                        key={
+                          url + accountPartial.username + accountPartial.source
+                        }
+                      >
                         <p>{accountPartial.username}</p>
                       </div>
                     );
