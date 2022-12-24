@@ -46,7 +46,7 @@ export const useExport = ({ accountMap }: UseExportProps): ExportState => {
     })
       .then(() => console.log("export ok"))
       .catch((err) => console.log(err));
-  }, []);
+  }, [accountMap]);
 
   return {
     exportAccounts

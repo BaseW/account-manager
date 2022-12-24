@@ -27,7 +27,7 @@ export const useFilter = ({
           console.log(err);
         });
     },
-    []
+    [accounts, updateAccountMap]
   );
 
   return {

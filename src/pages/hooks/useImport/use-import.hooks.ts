@@ -7,31 +7,34 @@ export const useImport = ({
   accounts,
   updateAccounts
 }: UseImportProps): ImportState => {
-  function startImport(
-    csvData: string | ArrayBuffer | null,
-    source: AccountSource | null
-  ): void {
-    console.log("start importing");
+  const startImport = useCallback(
+    (
+      csvData: string | ArrayBuffer | null,
+      source: AccountSource | null
+    ): void => {
+      console.log("start importing");
 
-    if (csvData === null ?? source === null) {
-      console.log("source is null");
-      return;
-    }
+      if (csvData === null ?? source === null) {
+        console.log("source is null");
+        return;
+      }
 
-    invoke("import_accounts", { csvData, source })
-      .then((res) => {
-        const newlyImportedAccounts = res as Account[];
-        const concatenedAccounts = [...accounts, ...newlyImportedAccounts];
-        updateAccounts(concatenedAccounts);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+      invoke("import_accounts", { csvData, source })
+        .then((res) => {
+          const newlyImportedAccounts = res as Account[];
+          const concatenedAccounts = [...accounts, ...newlyImportedAccounts];
+          updateAccounts(concatenedAccounts);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    [accounts, updateAccounts]
+  );
 
   const onResetAccounts = useCallback(() => {
     updateAccounts([]);
-  }, []);
+  }, [updateAccounts]);
 
   return {
     startImport,
