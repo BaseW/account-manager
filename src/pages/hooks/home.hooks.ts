@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
+import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 import { PageMode, Account, AccountMap, AccountSource } from "../../types/";
 import { HomeState } from "./home.types";
 
@@ -66,7 +67,13 @@ export const useHome = (): HomeState => {
     updateAccounts([]);
   }, []);
 
-  const exportAccounts = useCallback(() => {}, []);
+  const exportAccounts = useCallback(() => {
+    writeTextFile("export.csv", "col1,col2,col3\ndata1,data2,data3", {
+      dir: BaseDirectory.Download
+    })
+      .then(() => console.log("export ok"))
+      .catch((err) => console.log(err));
+  }, []);
 
   return {
     mode,
