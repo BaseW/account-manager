@@ -1,9 +1,9 @@
 import { useState, useCallback } from "react";
-import { invoke } from "@tauri-apps/api/tauri";
 import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 import { PageMode, Account, AccountMap } from "../../types/";
 import { HomeState } from "./home.types";
 import { useImport } from "./useImport";
+import { useFilter } from "./useFilter";
 
 export const useHome = (): HomeState => {
   const [mode, setMode] = useState<PageMode>("import");
@@ -26,26 +26,10 @@ export const useHome = (): HomeState => {
     accounts,
     updateAccounts
   });
-
-  function onFilterAccounts(
-    isIcloudIncluded: boolean,
-    isChromeIncluded: boolean,
-    isFirefoxIncluded: boolean
-  ): void {
-    invoke("filter_accounts", {
-      accounts,
-      isIcloudIncluded,
-      isChromeIncluded,
-      isFirefoxIncluded
-    })
-      .then((res) => {
-        const filteredAccountMap = res as AccountMap;
-        updateAccountMap(filteredAccountMap);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+  const { onFilterAccounts } = useFilter({
+    accounts,
+    updateAccountMap
+  });
 
   const convertAccountMapToCsv = useCallback(
     (accountMap: AccountMap | null): string => {
