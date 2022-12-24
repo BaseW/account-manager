@@ -1,8 +1,9 @@
 import { useState, useCallback } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
-import { PageMode, Account, AccountMap, AccountSource } from "../../types/";
+import { PageMode, Account, AccountMap } from "../../types/";
 import { HomeState } from "./home.types";
+import { useImport } from "./useImport";
 
 export const useHome = (): HomeState => {
   const [mode, setMode] = useState<PageMode>("import");
@@ -20,6 +21,11 @@ export const useHome = (): HomeState => {
   const updateAccountMap = useCallback((newAccountMap: AccountMap) => {
     setAccountMap(newAccountMap);
   }, []);
+
+  const { startImport, onResetAccounts } = useImport({
+    accounts,
+    updateAccounts
+  });
 
   function onFilterAccounts(
     isIcloudIncluded: boolean,
@@ -40,32 +46,6 @@ export const useHome = (): HomeState => {
         console.log(err);
       });
   }
-
-  function startImport(
-    csvData: string | ArrayBuffer | null,
-    source: AccountSource | null
-  ): void {
-    console.log("start importing");
-
-    if (csvData === null ?? source === null) {
-      console.log("source is null");
-      return;
-    }
-
-    invoke("import_accounts", { csvData, source })
-      .then((res) => {
-        const newlyImportedAccounts = res as Account[];
-        const concatenedAccounts = [...accounts, ...newlyImportedAccounts];
-        updateAccounts(concatenedAccounts);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  const onResetAccounts = useCallback(() => {
-    updateAccounts([]);
-  }, []);
 
   const convertAccountMapToCsv = useCallback(
     (accountMap: AccountMap | null): string => {
