@@ -1,87 +1,42 @@
-import { useCallback, useState } from "react";
-import { Account, AccountMap, AccountSource } from "../types";
 import { AccountImporter } from "../components/templates/AccountImporter/account-importer.component";
 import { AccountFilterer } from "../components/templates/AccountFilterer/account-filterer.component";
-import { invoke } from "@tauri-apps/api/tauri";
+import { Header } from "../components/molecules/Header/header.component";
+import { AccountExporter } from "../components/templates/AccountExporter/account-exporter.component";
+import { useHome } from "./hooks";
 
 function App(): JSX.Element {
-  const [mode, setMode] = useState<"import" | "filter">("import");
-  const [accounts, setAccounts] = useState<Account[]>([]);
-  const [accountMap, setAccountMap] = useState<AccountMap>();
-
-  const updateMode = useCallback((newMode: "import" | "filter") => {
-    setMode(newMode);
-  }, []);
-
-  const updateAccounts = useCallback((newAccounts: Account[]) => {
-    setAccounts(newAccounts);
-  }, []);
-
-  const updateAccountMap = useCallback((newAccountMap: AccountMap) => {
-    setAccountMap(newAccountMap);
-  }, []);
-
-  function onFilterAccounts(
-    isIcloudIncluded: boolean,
-    isChromeIncluded: boolean,
-    isFirefoxIncluded: boolean
-  ): void {
-    invoke("filter_accounts", {
-      accounts,
-      isIcloudIncluded,
-      isChromeIncluded,
-      isFirefoxIncluded,
-    })
-      .then((res) => {
-        const filteredAccountMap = res as AccountMap;
-        updateAccountMap(filteredAccountMap);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  function startImport(
-    csvData: string | ArrayBuffer | null,
-    source: AccountSource | null
-  ): void {
-    console.log("start importing");
-
-    if (csvData === null ?? source === null) {
-      console.log("source is null");
-      return;
-    }
-
-    invoke("import_accounts", { csvData, source })
-      .then((res) => {
-        const newlyImportedAccounts = res as Account[];
-        const concatenedAccounts = [...accounts, ...newlyImportedAccounts];
-        updateAccounts(concatenedAccounts);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  const onResetAccounts = useCallback(() => {
-    updateAccounts([]);
-  }, []);
+  const {
+    mode,
+    accounts,
+    accountMap,
+    updateMode,
+    startImport,
+    onResetAccounts,
+    onFilterAccounts,
+    exportAccounts
+  } = useHome();
 
   return (
     <div className="container">
-      {mode === "import" ? (
+      <Header currentMode={mode} onToggleMode={updateMode} />
+      {mode === "import" && (
         <AccountImporter
           accounts={accounts}
-          onToggleMode={() => updateMode("filter")}
           onImportAccounts={startImport}
           onResetAccounts={onResetAccounts}
         />
-      ) : (
+      )}
+      {mode === "filter" && (
         <AccountFilterer
-          onToggleMode={() => updateMode("import")}
           accounts={accounts}
           accountMap={accountMap}
           onFilterAccounts={onFilterAccounts}
+        />
+      )}
+      {mode === "export" && (
+        <AccountExporter
+          accountMap={accountMap}
+          onExportAccounts={exportAccounts}
         />
       )}
     </div>

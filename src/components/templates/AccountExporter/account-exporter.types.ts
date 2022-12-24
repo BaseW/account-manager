@@ -1,7 +1,6 @@
 import { AccountMap } from "../../../types";
 
 export interface AccountExporterProps {
-  accountMap: AccountMap | undefined;
-  onToggleMode: () => void;
-  exportAccounts: () => void;
+  accountMap: AccountMap | null;
+  onExportAccounts: () => void;
 }

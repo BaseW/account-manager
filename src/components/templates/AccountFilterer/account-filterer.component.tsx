@@ -6,21 +6,17 @@ import { AccountFiltererProps } from "./account-filterer.types";
 export const AccountFilterer = ({
   accounts,
   accountMap,
-  onToggleMode,
-  onFilterAccounts,
+  onFilterAccounts
 }: AccountFiltererProps): JSX.Element => {
   const {
     onChangeChromeCheckbox,
     onChangeIcloudCheckbox,
     onChangeFirefoxCheckbox,
-    onFilterAccountsCallback,
+    onFilterAccountsCallback
   } = useAccountFilterer(onFilterAccounts);
 
   return (
     <div>
-      <div>
-        <button onClick={() => onToggleMode()}>toggle mode</button>
-      </div>
       <AccountCount accounts={accounts} />
       <div>
         <div className="filterConditions">
@@ -50,7 +46,7 @@ export const AccountFilterer = ({
       {/* print url list and AccountPartial indented each url from accountMap */}
       <div>
         <h2>Filtered Accounts</h2>
-        {accountMap !== undefined &&
+        {accountMap !== null &&
           Object.keys(accountMap).length > 0 &&
           Object.keys(accountMap).map((url) => {
             return (
@@ -59,7 +55,11 @@ export const AccountFilterer = ({
                 <div>
                   {accountMap[url].map((accountPartial) => {
                     return (
-                      <div key={accountPartial.username}>
+                      <div
+                        key={
+                          url + accountPartial.username + accountPartial.source
+                        }
+                      >
                         <p>{accountPartial.username}</p>
                       </div>
                     );
