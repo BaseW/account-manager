@@ -33,6 +33,9 @@ export const useImport = ({
   );
 
   const onResetAccounts = useCallback(() => {
+    invoke("reset_accounts")
+      .then(() => {})
+      .catch(() => {});
     updateAccounts([]);
   }, [updateAccounts]);
 
