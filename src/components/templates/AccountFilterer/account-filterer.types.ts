@@ -12,6 +12,9 @@ export interface AccountFiltererProps {
 }
 
 export interface AccountFiltererState {
+  isIcloudIncluded: boolean;
+  isChromeIncluded: boolean;
+  isFirefoxIncluded: boolean;
   onChangeChromeCheckbox: (e: ChangeEvent<HTMLInputElement>) => void;
   onChangeIcloudCheckbox: (e: ChangeEvent<HTMLInputElement>) => void;
   onChangeFirefoxCheckbox: (e: ChangeEvent<HTMLInputElement>) => void;

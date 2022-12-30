@@ -9,6 +9,9 @@ export const AccountFilterer = ({
   onFilterAccounts
 }: AccountFiltererProps): JSX.Element => {
   const {
+    isIcloudIncluded,
+    isChromeIncluded,
+    isFirefoxIncluded,
     onChangeChromeCheckbox,
     onChangeIcloudCheckbox,
     onChangeFirefoxCheckbox,
@@ -23,17 +26,29 @@ export const AccountFilterer = ({
           <h3>Filter Conditions</h3>
           {/* checkbox for icloud */}
           <div>
-            <input type="checkbox" onChange={onChangeIcloudCheckbox} />
+            <input
+              type="checkbox"
+              checked={isIcloudIncluded}
+              onChange={onChangeIcloudCheckbox}
+            />
             <label>icloud</label>
           </div>
           {/* checkbox for chrome */}
           <div>
-            <input type="checkbox" onChange={onChangeChromeCheckbox} />
+            <input
+              type="checkbox"
+              checked={isChromeIncluded}
+              onChange={onChangeChromeCheckbox}
+            />
             <label>chrome</label>
           </div>
           {/* checkbox for firefox */}
           <div>
-            <input type="checkbox" onChange={onChangeFirefoxCheckbox} />
+            <input
+              type="checkbox"
+              checked={isFirefoxIncluded}
+              onChange={onChangeFirefoxCheckbox}
+            />
             <label>firefox</label>
           </div>
         </div>
