@@ -35,6 +35,12 @@ fn parse_record_as_account(record: &csv::StringRecord, source: &str) -> Account 
     }
 }
 
+#[tauri::command]
+pub fn reset_accounts(accounts_map_state: State<Mutex<AccountMap>>) {
+    let mut accounts_map = accounts_map_state.lock().unwrap();
+    accounts_map.clear();
+}
+
 // return serialized accounts
 #[tauri::command]
 pub fn import_accounts(

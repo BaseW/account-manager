@@ -7,8 +7,10 @@ use std::{collections::HashMap, sync::Mutex};
 
 use tauri::Manager;
 use tauri_app::{
-    __cmd__filter_accounts, __cmd__import_accounts, filter_accounts::filter_accounts,
-    import_accounts::import_accounts, AccountMap,
+    __cmd__filter_accounts, __cmd__import_accounts,
+    filter_accounts::filter_accounts,
+    import_accounts::{import_accounts, reset_accounts},
+    AccountMap, __cmd__reset_accounts,
 };
 
 fn main() {
@@ -18,7 +20,11 @@ fn main() {
             app.manage(accounts_map_state);
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![import_accounts, filter_accounts])
+        .invoke_handler(tauri::generate_handler![
+            import_accounts,
+            filter_accounts,
+            reset_accounts
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
