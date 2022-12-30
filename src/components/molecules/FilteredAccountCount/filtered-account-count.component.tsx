@@ -7,8 +7,7 @@ export const FilteredAccountCount = ({
 }): JSX.Element => (
   <div>
     <h2>Count of Filtered Accounts</h2>
-    {accountMap !== null &&
-      Object.keys(accountMap).length > 0 &&
-      Object.keys(accountMap).length}
+    {accountMap !== null && Object.keys(accountMap).length}
+    {accountMap === null && 0}
   </div>
 );

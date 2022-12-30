@@ -58,32 +58,6 @@ export const AccountFilterer = ({
       </div>
       {/* print key count of accountMap */}
       <FilteredAccountCount accountMap={accountMap} />
-      {/* print url list and AccountPartial indented each url from accountMap */}
-      <div>
-        <h2>Filtered Accounts</h2>
-        {accountMap !== null &&
-          Object.keys(accountMap).length > 0 &&
-          Object.keys(accountMap).map((url) => {
-            return (
-              <div key={url}>
-                <p>{url}</p>
-                <div>
-                  {accountMap[url].map((accountPartial) => {
-                    return (
-                      <div
-                        key={
-                          url + accountPartial.username + accountPartial.source
-                        }
-                      >
-                        <p>{accountPartial.username}</p>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })}
-      </div>
     </div>
   );
 };
