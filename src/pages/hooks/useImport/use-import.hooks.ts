@@ -21,9 +21,8 @@ export const useImport = ({
 
       invoke("import_accounts", { csvData, source })
         .then((res) => {
-          const newlyImportedAccounts = res as Account[];
-          const concatenedAccounts = [...accounts, ...newlyImportedAccounts];
-          updateAccounts(concatenedAccounts);
+          const allAccounts = res as Account[];
+          updateAccounts(allAccounts);
         })
         .catch((err) => {
           console.log(err);
@@ -33,6 +32,9 @@ export const useImport = ({
   );
 
   const onResetAccounts = useCallback(() => {
+    invoke("reset_accounts")
+      .then(() => {})
+      .catch(() => {});
     updateAccounts([]);
   }, [updateAccounts]);
 

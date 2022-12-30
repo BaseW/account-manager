@@ -29,6 +29,9 @@ export const useAccountFilterer = (
   }
 
   return {
+    isIcloudIncluded,
+    isChromeIncluded,
+    isFirefoxIncluded,
     onChangeChromeCheckbox,
     onChangeIcloudCheckbox,
     onChangeFirefoxCheckbox,

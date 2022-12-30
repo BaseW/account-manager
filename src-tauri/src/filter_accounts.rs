@@ -1,57 +1,56 @@
 use std::collections::HashMap;
 
-use crate::{Account, AccountPartial};
+use crate::{AccountMap, AccountPartial};
+use std::sync::Mutex;
+use tauri::State;
 
 // filter accounts
 #[tauri::command]
 pub fn filter_accounts(
-    accounts: Vec<Account>,
+    accounts_map_state: State<Mutex<AccountMap>>,
     is_icloud_included: bool,
     is_chrome_included: bool,
     is_firefox_included: bool,
 ) -> HashMap<String, Vec<AccountPartial>> {
+    // print args
+    println!(
+        "is_icloud_included: {}, is_chrome_included: {}, is_firefox_included: {}",
+        is_icloud_included, is_chrome_included, is_firefox_included
+    );
+    // print state
+    let accounts_map = accounts_map_state.lock().unwrap();
     // create HashMap: key is url, value is username and source
-    let mut accounts_map: HashMap<String, Vec<AccountPartial>> = HashMap::new();
+    let mut filtered_accounts_map: HashMap<String, Vec<AccountPartial>> = HashMap::new();
     // filter accounts
-    for account in accounts {
-        // check if account is included
-        let is_included = match account.source.as_str() {
-            "icloud" => is_icloud_included,
-            "chrome" => is_chrome_included,
-            "firefox" => is_firefox_included,
-            _ => panic!("unknown source"),
-        };
-        if is_included {
-            // check if url exists in map
-            if accounts_map.contains_key(&account.url) {
-                // update value
-                let accounts_vec = accounts_map.get_mut(&account.url).unwrap();
-                accounts_vec.push(AccountPartial {
-                    username: account.username,
-                    source: account.source,
+    for (url, accounts_vec) in accounts_map.iter() {
+        // create new Vec
+        let mut new_accounts_vec = Vec::new();
+        for account_partial in accounts_vec {
+            // check if source is included
+            if (account_partial.source == "icloud" && is_icloud_included)
+                || (account_partial.source == "chrome" && is_chrome_included)
+                || (account_partial.source == "firefox" && is_firefox_included)
+            {
+                new_accounts_vec.push(AccountPartial {
+                    username: account_partial.username.as_str().to_string(),
+                    password: account_partial.password.as_str().to_string(),
+                    source: account_partial.source.as_str().to_string(),
                 });
-                // create new Vec
-                let mut new_accounts_vec = Vec::new();
-                for account_partial in accounts_vec {
-                    new_accounts_vec.push(AccountPartial {
-                        username: account_partial.username.as_str().to_string(),
-                        source: account_partial.source.as_str().to_string(),
-                    });
-                }
-                // update value
-                accounts_map.insert(account.url, new_accounts_vec);
-            } else {
-                // if url does not exist, add it to map
-                accounts_map.insert(
-                    account.url,
-                    vec![AccountPartial {
-                        username: account.username,
-                        source: account.source,
-                    }],
-                );
             }
         }
+        if new_accounts_vec.len() > 0 {
+            // add to filtered_accounts_map
+            filtered_accounts_map.insert(url.to_string(), new_accounts_vec);
+        } else {
+            // remove from filtered_accounts_map
+            filtered_accounts_map.remove(url);
+        }
     }
+    // print result length
+    println!(
+        "filtered_accounts_map length: {}",
+        filtered_accounts_map.len()
+    );
     // return filtered accounts
-    accounts_map
+    filtered_accounts_map
 }
