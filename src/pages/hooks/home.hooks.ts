@@ -30,7 +30,7 @@ export const useHome = (): HomeState => {
     accounts,
     updateAccountMap
   });
-  const { exportAccounts } = useExport({ accountMap });
+  const { exportAccounts } = useExport();
 
   return {
     mode,
