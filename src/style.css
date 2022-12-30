@@ -84,6 +84,10 @@ button {
   margin-right: 5px;
 }
 
+.headerButtonActive {
+  opacity: 0.5;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     color: #f6f6f6;
