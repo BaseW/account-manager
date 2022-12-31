@@ -13,24 +13,32 @@ export const Header = ({
   return (
     <div className="header">
       <button
-        className={`header__button ${
-          currentMode === "import" ? "header__button--active" : ""
+        className={`headerButton ${
+          currentMode === "import" ? "headerButtonActive" : ""
         }`}
         onClick={() => onToggleMode("import")}
       >
         Import
       </button>
       <button
-        className={`header__button ${
-          currentMode === "filter" ? "header__button--active" : ""
+        className={`headerButton ${
+          currentMode === "list" ? "headerButtonActive" : ""
+        }`}
+        onClick={() => onToggleMode("list")}
+      >
+        List
+      </button>
+      <button
+        className={`headerButton ${
+          currentMode === "filter" ? "headerButtonActive" : ""
         }`}
         onClick={() => onToggleMode("filter")}
       >
         Filter
       </button>
       <button
-        className={`header__button ${
-          currentMode === "export" ? "header__button--active" : ""
+        className={`headerButton ${
+          currentMode === "export" ? "headerButtonActive" : ""
         }`}
         onClick={() => onToggleMode("export")}
       >
