@@ -3,6 +3,7 @@ import { AccountFilterer } from "../components/templates/AccountFilterer/account
 import { Header } from "../components/molecules/Header/header.component";
 import { AccountExporter } from "../components/templates/AccountExporter/account-exporter.component";
 import { useHome } from "./hooks";
+import { AccountList } from "../components/templates/AccountList/account-list.component";
 
 function App(): JSX.Element {
   const {
@@ -26,6 +27,7 @@ function App(): JSX.Element {
           onResetAccounts={onResetAccounts}
         />
       )}
+      {mode === "list" && <AccountList accounts={accounts} />}
       {mode === "filter" && (
         <AccountFilterer
           accounts={accounts}

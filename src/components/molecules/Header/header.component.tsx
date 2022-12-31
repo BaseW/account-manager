@@ -22,6 +22,14 @@ export const Header = ({
       </button>
       <button
         className={`headerButton ${
+          currentMode === "list" ? "headerButtonActive" : ""
+        }`}
+        onClick={() => onToggleMode("list")}
+      >
+        List
+      </button>
+      <button
+        className={`headerButton ${
           currentMode === "filter" ? "headerButtonActive" : ""
         }`}
         onClick={() => onToggleMode("filter")}

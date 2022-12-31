@@ -1,1 +1,1 @@
-export type PageMode = "import" | "filter" | "export";
+export type PageMode = "import" | "list" | "filter" | "export";
