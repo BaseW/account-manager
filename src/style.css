@@ -88,6 +88,23 @@ button {
   opacity: 0.5;
 }
 
+.accountDetailContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.accountUrlContainer {
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.accountSourceContainer {
+  width: 200px;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     color: #f6f6f6;
