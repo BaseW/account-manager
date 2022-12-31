@@ -96,6 +96,7 @@ pub fn import_accounts(
     }
     // print result length
     println!("accounts length: {}", accounts.len());
-    // return serialized accounts
+    // return accounts sorted by url
+    accounts.sort_by(|a, b| a.url.cmp(&b.url));
     accounts
 }
